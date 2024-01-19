@@ -20,6 +20,7 @@ import PetProfile from './app/screens/pet-profile/PetProfile';
 import Register from './app/screens/login/Register';
 
 const Stack = createNativeStackNavigator();
+const LoginStack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -55,10 +56,17 @@ export function MyDrawer() {
 
 function InsideLayout() {
   return (
-    <InsideStack.Navigator>
-      <InsideStack.Screen name='Home' component={MyDrawer} options={{ headerShown: false }} />
-      <InsideStack.Screen name='Pet-Register' component={PetRegister} />
+    <InsideStack.Navigator >
+      <InsideStack.Screen name='Drawer' component={MyDrawer} options={{ headerShown: false }} />
     </InsideStack.Navigator>
+  )
+}
+function LoginLayout() {
+  return (
+    <LoginStack.Navigator>
+      <LoginStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      <LoginStack.Screen name='user-register' component={Register} options={{ headerShown: false }} />
+    </LoginStack.Navigator>
   )
 }
 
@@ -81,10 +89,9 @@ export default function App() {
   return (
     <NavigationContainer >
       <Stack.Navigator initialRouteName='Login'>
-        <InsideStack.Screen name='user-register' component={Register} options={{ headerShown: false }} />
 
         {user ? <Stack.Screen name="Inside" component={InsideLayout} options={{ headerShown: false }} />
-          : <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          : <Stack.Screen name="LoginLayout" component={LoginLayout} options={{ headerShown: false }} />
         }
 
       </Stack.Navigator>

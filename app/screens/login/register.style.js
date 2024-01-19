@@ -63,6 +63,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         marginTop: 10
+    },
+    errorText: {
+        color: 'red'
     }
 });
 

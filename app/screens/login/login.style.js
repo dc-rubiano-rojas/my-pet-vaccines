@@ -21,6 +21,12 @@ const styles = StyleSheet.create({
         height: '60%',
         tintColor: COLORS.primary
     },
+    logoGoogle: {
+        width: '15%',
+        height: '15%',
+        paddingHorizontal: '50%',
+        paddingVertical: '12%'
+    },
     headerText: {
         fontSize: SIZES.xxLarge,
         color: COLORS.primary,
@@ -55,6 +61,13 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         marginTop: 10
+    },
+    errorText: {
+        color: 'red'
+    },
+    forgotPasswordText: {
+        color: COLORS.gray,
+        fontStyle: 'italic'
     }
 });
 
