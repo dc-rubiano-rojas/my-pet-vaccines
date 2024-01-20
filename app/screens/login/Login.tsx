@@ -1,6 +1,7 @@
 import { Text, Button, StyleSheet, TextInput, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
-import React, { useState } from 'react'
-import { FIREBASE_AUTH } from '../../../firebaseConfig'
+import React, { useEffect, useState } from 'react'
+import { collection, addDoc, onSnapshot, query, where, getDocs } from "firebase/firestore";
+import { FIREBASE_AUTH, FIRESTORE_DB } from '../../../firebaseConfig'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import styles from './login.style'
 import { SafeAreaView, Image } from 'react-native';
@@ -8,6 +9,7 @@ import { COLORS, images } from '../../../constants'
 import { TouchableOpacity, View } from 'react-native-ui-lib'
 import LoginButton from '../../../components/common/buttons/LoginButton'
 import { ScreenHeaderBtn } from '../../../components'
+import { User } from '../../../utils/types';
 
 const Login = ({ navigation }: any) => {
     const [email, setEmail] = useState('')
@@ -16,25 +18,53 @@ const Login = ({ navigation }: any) => {
     const [errors, setErrors] = useState({ email: '', password: '' })
 
     const auth = FIREBASE_AUTH
+    const db = FIRESTORE_DB
+
     const signIn = async () => {
-        console.log('validateForm: ', validateForm());
+        setLoading(true)
 
-        if (validateForm()) {
+        const isUserInFirestore = await validationFirestore()
 
-            setLoading(true)
-            try {
-                const response = await signInWithEmailAndPassword(auth, email, password)
-                console.log(response);
-            } catch (error: any) {
-                console.log(error);
-                alert('Sign in failed: ' + error.message)
-            } finally {
-                setLoading(false)
-            }
+        if (!validateForm() && isUserInFirestore) {
+            alert('Must be an error with your email')
+            return
+        }
+        try {
+            const response = await signInWithEmailAndPassword(auth, email, password)
+            console.log(response);
+        } catch (error: any) {
+            console.log(error);
+            alert('Sign in failed: ' + error.message)
+        } finally {
+            setLoading(false)
         }
     }
     const register = () => {
         navigation.navigate('user-register')
+    }
+
+    const validationFirestore = async () => {
+        const userRef = collection(FIRESTORE_DB, 'users')
+        const messagesCollectionRef = query(userRef, where("email", "==", email));
+        const data = await getDocs(messagesCollectionRef);
+        const exist = data.docs.filter((doc) => doc.data().email === email)
+        if (exist.length > 0) {
+            return true
+         }
+         return false
+        /*         onSnapshot(userRef, {
+                    next: (snapshot) => {
+                        console.log('SEARCHING');                
+                        snapshot.docs.forEach((doc: any): any => {
+                            
+                            if (doc.uid === email) {
+                                console.log('USER EXIST');
+                                
+                                setUserExist(true)
+                            }
+                        })
+                    }
+                }) */
     }
 
     const validateForm = () => {

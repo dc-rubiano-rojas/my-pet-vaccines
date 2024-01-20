@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useController, useForm } from 'react-hook-form'
 import { Text, TextInput, ActivityIndicator, Button } from 'react-native'
-import { FIREBASE_AUTH } from '../../../firebaseConfig'
+import { addDoc, collection } from 'firebase/firestore'
+import { FIREBASE_AUTH, FIRESTORE_DB } from '../../../firebaseConfig'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { SafeAreaView, Image } from 'react-native';
 import { COLORS, images } from '../../../constants'
@@ -9,15 +10,7 @@ import { TouchableOpacity, View } from 'react-native-ui-lib'
 import LoginButton from '../../../components/common/buttons/LoginButton'
 import { ScreenHeaderBtn } from '../../../components'
 import styles from './register.style';
-
-type DataForm = {
-  Name: string
-  Lastname: string
-  Email: string
-  'Confirm Email': string
-  Password: string
-  'Confirm Password': string
-};
+import { DataFormMyType, User } from '../../../utils/types';
 
 const Register = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)
@@ -26,28 +19,32 @@ const Register = ({ navigation }: any) => {
   const auth = FIREBASE_AUTH
 
 
-  const validateForm = (data: DataForm | any) => {
+  const validateForm = (data: DataFormMyType | any) => {
     let errors = { email: '', password: '', name: '' };
 
-    const isEmailValid = (data.Email === data['Confirm Email']) && data.Email && data['Confirm Email']
-    if (!isEmailValid) errors.email = 'Email does not match'
-
-    const isPasswordValid = (data.Password === data['Confirm Password']) && data.Password && data['Confirm Password']
-    if (!isPasswordValid) errors.password = 'Password does not match'
-
-    if (!data.Name) errors.name = 'Name is required'
+    /*     const isEmailValid = (data.Email === data['Confirm Email']) && data.Email && data['Confirm Email']
+        if (!isEmailValid) errors.email = 'Email does not match'
+    
+        const isPasswordValid = (data.Password === data['Confirm Password']) && data.Password && data['Confirm Password']
+        if (!isPasswordValid) errors.password = 'Password does not match'
+    
+        if (!data.Name) errors.name = 'Name is required' */
     setErrors(errors);
 
     return !!!errors.email && !!!errors.password && !!!errors.name
   }
 
-  const registerNewUser = async (data: DataForm | any) => {
+
+  const registerNewUser = async (data: DataFormMyType | any) => {
 
     if (validateForm(data)) {
       setLoading(true)
       try {
         const response = await createUserWithEmailAndPassword(auth, data.Email, data.Password)
-        console.log(response);
+        // FIXME: add datos del form
+        const userToSave: User = response.user.providerData[0]
+        await addDoc(collection(FIRESTORE_DB, 'users'), { ...userToSave })
+
       } catch (error: any) {
         console.log(error);
         alert('register in failed: ' + error.message)
@@ -106,10 +103,6 @@ const Register = ({ navigation }: any) => {
   )
 }
 
-export default Register
-
-
-
 const Input = ({ name, control }: any) => {
   const { field } = useController({
     control,
@@ -120,3 +113,5 @@ const Input = ({ name, control }: any) => {
     <TextInput style={styles.input} placeholder={name} autoCapitalize='none' value={field.value} onChangeText={field.onChange} />
   )
 }
+
+export default Register

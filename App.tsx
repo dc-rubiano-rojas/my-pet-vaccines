@@ -47,8 +47,7 @@ export function MyDrawer() {
           <ScreenHeaderBtn iconUrl={images.profile} dimension='100%' handlePress={undefined} />
         ),
       }} />
-      <Drawer.Screen name="Pet-Register" component={PetRegister} />
-      <Drawer.Screen name="Pet Profile" component={PetProfile} />
+      <InsideStack.Screen name="Pet Register" component={PetRegister} options={{ headerShown: false }} />
       <Drawer.Screen name="Profile" component={Profile} />
     </Drawer.Navigator>
   );
@@ -58,6 +57,7 @@ function InsideLayout() {
   return (
     <InsideStack.Navigator >
       <InsideStack.Screen name='Drawer' component={MyDrawer} options={{ headerShown: false }} />
+      <InsideStack.Screen name="Pet Profile" component={PetProfile} />
     </InsideStack.Navigator>
   )
 }
