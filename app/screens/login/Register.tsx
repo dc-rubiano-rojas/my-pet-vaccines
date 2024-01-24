@@ -22,13 +22,13 @@ const Register = ({ navigation }: any) => {
   const validateForm = (data: DataFormMyType | any) => {
     let errors = { email: '', password: '', name: '' };
 
-    /*     const isEmailValid = (data.Email === data['Confirm Email']) && data.Email && data['Confirm Email']
-        if (!isEmailValid) errors.email = 'Email does not match'
-    
-        const isPasswordValid = (data.Password === data['Confirm Password']) && data.Password && data['Confirm Password']
-        if (!isPasswordValid) errors.password = 'Password does not match'
-    
-        if (!data.Name) errors.name = 'Name is required' */
+    const isEmailValid = (data.Email === data['Confirm Email']) && data.Email && data['Confirm Email']
+    if (!isEmailValid) errors.email = 'Email does not match'
+
+    const isPasswordValid = (data.Password === data['Confirm Password']) && data.Password && data['Confirm Password']
+    if (!isPasswordValid) errors.password = 'Password does not match'
+
+    if (!data.Name) errors.name = 'Name is required'
     setErrors(errors);
 
     return !!!errors.email && !!!errors.password && !!!errors.name
@@ -103,7 +103,7 @@ const Register = ({ navigation }: any) => {
   )
 }
 
-const Input = ({ name, control }: any) => {
+export const Input = ({ name, control }: any) => {
   const { field } = useController({
     control,
     defaultValue: '',

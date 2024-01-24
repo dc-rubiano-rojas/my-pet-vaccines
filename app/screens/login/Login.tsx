@@ -50,8 +50,8 @@ const Login = ({ navigation }: any) => {
         const exist = data.docs.filter((doc) => doc.data().email === email)
         if (exist.length > 0) {
             return true
-         }
-         return false
+        }
+        return false
         /*         onSnapshot(userRef, {
                     next: (snapshot) => {
                         console.log('SEARCHING');                

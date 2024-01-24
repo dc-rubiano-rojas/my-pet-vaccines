@@ -1,63 +1,72 @@
 import 'react-native-gesture-handler';
 
+import { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { User, onAuthStateChanged } from 'firebase/auth';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
-import Detail from './app/screens/Detail';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Feather from 'react-native-vector-icons/Feather';
+
+import { COLORS, icons, images } from './constants';
 import Login from './app/screens/login/Login';
 import Home from './app/screens/home/Home';
-import { icons, images } from './constants';
-import { ScreenHeaderBtn } from './components';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { useCallback, useEffect, useState } from 'react';
 import { FIREBASE_AUTH } from './firebaseConfig';
 import PetRegister from './app/screens/pet-register/PetRegister';
-import Profile from './app/screens/profile/Profile';
-import * as SplashScreen from 'expo-splash-screen';
+import Profile from './app/screens/profile/UserProfile';
 import PetProfile from './app/screens/pet-profile/PetProfile';
 import Register from './app/screens/login/Register';
+import PetEditModal from './app/screens/modals/pet-edit/PetEditModal';
 
 const Stack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 
-function CustomDrawerContent(props: any) {
+function MyTabs() {
   return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem
-        label="Logout"
-        onPress={async () => await FIREBASE_AUTH.signOut()}
-      />
-    </DrawerContentScrollView>
-  );
-}
-
-export function MyDrawer() {
-  return (
-    <Drawer.Navigator initialRouteName='Home' drawerContent={CustomDrawerContent} >
-      <Drawer.Screen name="Home" component={Home} options={{
-        title: 'My Pets',
-        drawerLabel: 'My Pets',
-        headerRight: () => (
-          <ScreenHeaderBtn iconUrl={images.profile} dimension='100%' handlePress={undefined} />
-        ),
+    <Tab.Navigator screenOptions={{
+      tabBarShowLabel: false,
+      tabBarHideOnKeyboard: true,
+      tabBarStyle: { backgroundColor: COLORS.secondary },
+      tabBarActiveTintColor: COLORS.tertiary,
+      tabBarInactiveTintColor: COLORS.primary,
+    }}>
+      <Tab.Screen name="Home" component={Home} options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name='home-outline' color={color} size={size} />
+        )
       }} />
-      <InsideStack.Screen name="Pet Register" component={PetRegister} options={{ headerShown: false }} />
-      <Drawer.Screen name="Profile" component={Profile} />
-    </Drawer.Navigator>
+      <Tab.Screen name="Pet Register" component={PetRegister} options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <MaterialIcons name='pets' color={color} size={size} />
+        )
+      }} />
+      <Tab.Screen name="Profile" component={Profile} options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <Feather name='user' color={color} size={size} />
+        )
+      }} />
+    </Tab.Navigator>
   );
 }
 
 function InsideLayout() {
   return (
     <InsideStack.Navigator >
-      <InsideStack.Screen name='Drawer' component={MyDrawer} options={{ headerShown: false }} />
+      <InsideStack.Screen name='Tabs' component={MyTabs} options={{ headerShown: false }} />
       <InsideStack.Screen name="Pet Profile" component={PetProfile} />
+      <InsideStack.Group screenOptions={{ presentation: 'modal' }}>
+        <InsideStack.Screen name="PetEdit" component={PetEditModal} options={{ headerShown: false }} />
+      </InsideStack.Group>
     </InsideStack.Navigator>
   )
 }

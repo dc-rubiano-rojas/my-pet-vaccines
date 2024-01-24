@@ -5,33 +5,31 @@ import { COLORS, FONT, SIZES } from "../../../constants";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: "column",
+        backgroundColor: COLORS.gray2,
+    },
+    formProfileContainer: {
+        flex: 1,
         flexDirection: 'column',
-        backgroundColor: COLORS.primary
+        justifyContent: "flex-start",
+        backgroundColor: COLORS.gray,
+        borderTopRightRadius: 75,
+        borderBottomLeftRadius: 75,
+        paddingTop: 40,
+        marginBottom: 30
+
     },
-    headerContainer: {
-        backgroundColor: COLORS.secondary,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexBasis: '15%',
-        borderBottomLeftRadius: 150,
-        borderBottomRightRadius: 150,
+    inputsContainer: {
+        marginTop: 5,
+        marginHorizontal: 20,
     },
-    formContainer: {
-        flexBasis: '100%',
-        backgroundColor: COLORS.primary, 
-    },
-    headerText: {
+    loginText: {
         color: COLORS.primary,
-        fontSize: SIZES.xLarge
+        marginTop: 10,
+        marginBottom: 10,
+        alignSelf: 'center',
     },
-    logoButton: {
-        width: '100%',
-        height: '100%',
-        marginVertical: 5,
-        borderRadius: 9,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+
 });
 
 export default styles;
