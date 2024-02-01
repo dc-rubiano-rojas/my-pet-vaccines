@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: COLORS.primary
+        backgroundColor: COLORS.gray2
     },
     headerContainer: {
         backgroundColor: COLORS.secondary,
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
     registerContainer: {
         flexBasis: '85%',
-        backgroundColor: COLORS.primary,
+        backgroundColor: COLORS.gray2,
         justifyContent: 'center',
         flex: 1,
         flexDirection: 'column',
@@ -64,6 +64,14 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
         alignSelf: 'center',
+    },
+    input: {
+        marginVertical: 4,
+        height: 40,
+        borderWidth: 0.2,
+        borderRadius: 4,
+        padding: 10,
+        backgroundColor: '#fff'
     },
 });
 

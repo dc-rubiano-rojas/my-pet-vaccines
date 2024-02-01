@@ -29,7 +29,17 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         alignSelf: 'center',
     },
-
+    input: {
+        marginVertical: 4,
+        height: 40,
+        borderWidth: 0.2,
+        borderRadius: 4,
+        padding: 10,
+        backgroundColor: '#fff'
+    },
+    errorText: {
+        color: 'red'
+    }
 });
 
 export default styles;

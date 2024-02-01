@@ -7,7 +7,7 @@ import styles from './login.style'
 import { SafeAreaView, Image } from 'react-native';
 import { COLORS, images } from '../../../constants'
 import { TouchableOpacity, View } from 'react-native-ui-lib'
-import LoginButton from '../../../components/common/buttons/LoginButton'
+import LoginButton from '../../../components/common/buttons/CustomButton'
 import { ScreenHeaderBtn } from '../../../components'
 import { User } from '../../../utils/types';
 

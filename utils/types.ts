@@ -7,6 +7,16 @@ export type DataFormMyType = {
   "Confirm Password": string;
 };
 
+export type FormDataToRegisterAPet = {
+  Age: string,
+  Breed: string,
+  Color: string,
+  Gender: string,
+  Height: string,
+  Name: string,
+  Weight: string
+}
+
 export type User = {
   displayName?: string | null;
   email: string | null;

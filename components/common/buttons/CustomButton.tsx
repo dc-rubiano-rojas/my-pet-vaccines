@@ -3,7 +3,7 @@ import React from 'react'
 import styles from './login-button.style'
 import { TouchableOpacity } from 'react-native-ui-lib'
 
-const LoginButton = ({handleOnPress, title}: any) => {
+const CustomButton = ({handleOnPress, title}: any) => {
     return (
 
         <TouchableOpacity
@@ -15,4 +15,4 @@ const LoginButton = ({handleOnPress, title}: any) => {
     )
 }
 
-export default LoginButton
+export default CustomButton

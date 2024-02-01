@@ -11,7 +11,7 @@ import { FIREBASE_AUTH } from '../../../firebaseConfig';
 import styles from './home.style';
 import { COLORS, images } from '../../../constants';
 import { ScreenHeader, ScreenHeaderBtn } from '../../../components';
-import LoginButton from '../../../components/common/buttons/LoginButton';
+import CustomButton from '../../../components/common/buttons/CustomButton';
 
 interface RouterProps {
     navigation: NavigationProp<any, any>;
@@ -57,11 +57,11 @@ const Home = ({ navigation }: RouterProps) => {
                                 <Text style={styles.dogInfoText}><Text style={styles.dogInfoTextBold}>Height: </Text>20cm</Text>
                             </View>
 
-                            <LoginButton
+                            <CustomButton
                                 handleOnPress={handleButton}
                                 title={'Edit'}
                             />
-                            <LoginButton
+                            <CustomButton
                                 handleOnPress={() => navigation.navigate('PetEdit')}
                                 title={'Vaccines'}
                             />
