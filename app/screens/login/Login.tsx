@@ -5,17 +5,20 @@ import { FIREBASE_AUTH, FIRESTORE_DB } from '../../../firebaseConfig'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import styles from './login.style'
 import { SafeAreaView, Image } from 'react-native';
-import { COLORS, images } from '../../../constants'
+import { COLORS, images } from '../../constants'
 import { TouchableOpacity, View } from 'react-native-ui-lib'
-import LoginButton from '../../../components/common/buttons/CustomButton'
-import { ScreenHeaderBtn } from '../../../components'
-import { User } from '../../../utils/types';
+import LoginButton from '../../components/common/buttons/CustomButton'
+import { ScreenHeaderBtn } from '../../components'
+import { User } from '../../utils/types';
+import useUserStore from '../../services/state/zustand/user-store';
 
 const Login = ({ navigation }: any) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState({ email: '', password: '' })
+
+    const { updateUser } = useUserStore()
 
     const auth = FIREBASE_AUTH
     const db = FIRESTORE_DB
@@ -31,6 +34,7 @@ const Login = ({ navigation }: any) => {
         }
         try {
             const response = await signInWithEmailAndPassword(auth, email, password)
+
             console.log(response);
         } catch (error: any) {
             console.log(error);
@@ -47,7 +51,18 @@ const Login = ({ navigation }: any) => {
         const userRef = collection(FIRESTORE_DB, 'users')
         const messagesCollectionRef = query(userRef, where("email", "==", email));
         const data = await getDocs(messagesCollectionRef);
-        const exist = data.docs.filter((doc) => doc.data().email === email)
+        const exist = data.docs.filter((doc) => {
+            if (doc.data().email === email) {
+                updateUser({
+                    name: doc.data().displayName,
+                    lastName: '',
+                    email: doc.data().email,
+                    contactNumber: doc.data().phoneNumber
+                })
+                return doc
+            }
+        })
+
         if (exist.length > 0) {
             return true
         }

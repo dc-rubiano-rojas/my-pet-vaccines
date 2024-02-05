@@ -8,12 +8,12 @@ import * as Yup from 'yup';
 import { FIREBASE_AUTH, FIRESTORE_DB } from '../../../firebaseConfig'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { SafeAreaView, Image } from 'react-native';
-import { COLORS, images } from '../../../constants'
+import { COLORS, images } from '../../constants'
 import { TouchableOpacity, View } from 'react-native-ui-lib'
-import CustomButton from '../../../components/common/buttons/CustomButton'
-import { ScreenHeaderBtn } from '../../../components'
+import CustomButton from '../../components/common/buttons/CustomButton'
+import { ScreenHeaderBtn } from '../../components'
 import styles from './register.style';
-import { DataFormMyType, User } from '../../../utils/types';
+import { DataFormMyType, User } from '../../utils/types';
 
 const Register = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)

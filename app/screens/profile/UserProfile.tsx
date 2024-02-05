@@ -7,15 +7,17 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as Yup from 'yup';
 
 import styles from './user-profile.style'
-import { COLORS, icons, images } from '../../../constants'
+import { COLORS, icons, images } from '../../constants'
 import { FIREBASE_AUTH } from '../../../firebaseConfig';
 import { useForm } from 'react-hook-form';
-import CustomButton from '../../../components/common/buttons/CustomButton';
-import { ScreenHeader } from '../../../components';
+import CustomButton from '../../components/common/buttons/CustomButton';
+import { ScreenHeader } from '../../components';
 import { Formik } from 'formik';
+import useUserStore from '../../services/state/zustand/user-store';
 
 const Profile = () => {
   const { control, handleSubmit } = useForm()
+  const { name, email, contactNumber } = useUserStore()
   const handleButton = async () => {
 
 
@@ -59,6 +61,7 @@ const Profile = () => {
                   name: '',
                   lastname: '',
                   email: '',
+                  contactNumber: '',
                 }}
                 validationSchema={ResgisterUserSchema}
                 onSubmit={registerNewUser}
@@ -73,15 +76,23 @@ const Profile = () => {
                   isValid
                 }): any => (
                   <>
-                    <TextInput placeholder='Name' style={styles.input} value={values.name}
-                      onChangeText={handleChange('contactNumber')}
-                      onBlur={() => setFieldTouched('contactNumber')} />
+                    <TextInput placeholder={'Name'} style={styles.input} value={values.name}
+                      onChangeText={handleChange('name')}
+                      onBlur={() => setFieldTouched('name')} />
                     <TextInput placeholder='Lastname' style={styles.input} value={values.lastname}
+                      onChangeText={handleChange('lastname')}
+                      onBlur={() => setFieldTouched('lastname')} />
+                    <TextInput placeholder='Email' style={styles.input}
+                      onChangeText={handleChange('email')}
+                      onBlur={() => setFieldTouched('email')}
+                      value={email}
+                      editable={false} />
+                    <TextInput placeholder={'Contact Number'}
+                      style={styles.input}
+                      value={values.email}
                       onChangeText={handleChange('contactNumber')}
-                      onBlur={() => setFieldTouched('contactNumber')} />
-                    <TextInput placeholder='Email' style={styles.input} value={values.email}
-                      onChangeText={handleChange('contactNumber')}
-                      onBlur={() => setFieldTouched('contactNumber')} />
+                      onBlur={() => setFieldTouched('contactNumber')}
+                    />
 
                   </>
                 )}

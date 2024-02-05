@@ -6,12 +6,12 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import styles from './pet-register.style'
-import { COLORS, images } from '../../../constants'
-import { ScreenHeader } from '../../../components'
-import CustomButton from '../../../components/common/buttons/CustomButton';
+import { COLORS, images } from '../../constants'
+import { ScreenHeader } from '../../components'
+import CustomButton from '../../components/common/buttons/CustomButton';
 import { Controller, useForm } from 'react-hook-form';
 import { FIRESTORE_DB } from '../../../firebaseConfig';
-import { FormDataToRegisterAPet } from '../../../utils/types';
+import { FormDataToRegisterAPet } from '../../utils/types';
 
 const PetRegister = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)

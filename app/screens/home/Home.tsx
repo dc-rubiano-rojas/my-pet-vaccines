@@ -9,9 +9,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { FIREBASE_AUTH } from '../../../firebaseConfig';
 import styles from './home.style';
-import { COLORS, images } from '../../../constants';
-import { ScreenHeader, ScreenHeaderBtn } from '../../../components';
-import CustomButton from '../../../components/common/buttons/CustomButton';
+import { COLORS, images } from '../../constants';
+import { ScreenHeader, ScreenHeaderBtn } from '../../components';
+import CustomButton from '../../components/common/buttons/CustomButton';
 
 interface RouterProps {
     navigation: NavigationProp<any, any>;

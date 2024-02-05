@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { COLORS, FONT, SIZES } from "../../../constants";
+import { COLORS, FONT, SIZES } from "../../constants";
 
 const styles = StyleSheet.create({
     container: {
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     },
     logoutButton: {
         alignItems: 'center',
-        paddingTop: 34,
-        flexBasis: '24%',
+        paddingTop: 25,
+        flexBasis: '19%',
     },
     formProfileContainer: {
         flex: 1,

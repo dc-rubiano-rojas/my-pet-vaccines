@@ -8,11 +8,12 @@ import { User, onAuthStateChanged } from 'firebase/auth';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 
-import { COLORS, icons, images } from './constants';
+import { COLORS, icons, images } from './app/constants';
 import Login from './app/screens/login/Login';
 import Home from './app/screens/home/Home';
 import { FIREBASE_AUTH } from './firebaseConfig';
@@ -81,9 +82,9 @@ function LoginLayout() {
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
-    KSBold: require('./assets/fonts/KumbhSans-Bold.ttf'),
-    KSMedium: require('./assets/fonts/KumbhSans-Medium.ttf'),
-    KSRegular: require('./assets/fonts/Salsa-Regular.ttf'),
+    KSBold: require('./app/assets/fonts/KumbhSans-Bold.ttf'),
+    KSMedium: require('./app/assets/fonts/KumbhSans-Medium.ttf'),
+    KSRegular: require('./app/assets/fonts/Salsa-Regular.ttf'),
   });
 
   const [user, setUser] = useState<User | null>(null)
@@ -96,15 +97,17 @@ export default function App() {
 
 
   return (
-    <NavigationContainer >
-      <Stack.Navigator initialRouteName='Login'>
 
-        {user ? <Stack.Screen name="Inside" component={InsideLayout} options={{ headerShown: false }} />
-          : <Stack.Screen name="LoginLayout" component={LoginLayout} options={{ headerShown: false }} />
-        }
+      <NavigationContainer >
+        <Stack.Navigator initialRouteName='Login'>
 
-      </Stack.Navigator>
-    </NavigationContainer>
+          {user ? <Stack.Screen name="Inside" component={InsideLayout} options={{ headerShown: false }} />
+            : <Stack.Screen name="LoginLayout" component={LoginLayout} options={{ headerShown: false }} />
+          }
+
+        </Stack.Navigator>
+      </NavigationContainer>
+
   );
 }
 

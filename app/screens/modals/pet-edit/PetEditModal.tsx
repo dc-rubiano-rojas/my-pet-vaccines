@@ -1,7 +1,7 @@
 import { View, Text, Button, SafeAreaView } from 'react-native'
 
 import React from 'react'
-import { ScreenHeader } from '../../../../components'
+import { ScreenHeader } from '../../../components'
 import styles from './pet-edit-motal.style'
 
 const PetEditModal = ({ navigation }: any) => {
