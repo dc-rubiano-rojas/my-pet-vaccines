@@ -11,12 +11,7 @@ export function getUser(id: string) {
 
 }
 export async function updateUser(user: UserToRegister) {
-    console.log('====================================');
-    console.log('UPDATE USER');
-    console.log(user);
-    console.log('====================================');
     try {
-        /* const ref = doc(FIRESTORE_DB, `users/nqSxJEWAYJ0GENrypvjZ`) */
         const ref = doc(FIRESTORE_DB, `users/${user.uid}`)
         await updateDoc(ref, { ...user })
     } catch (error: any) {

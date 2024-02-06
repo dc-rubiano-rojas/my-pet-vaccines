@@ -15,18 +15,21 @@ import { ScreenHeader } from '../../components';
 import { Formik } from 'formik';
 import useUserStore from '../../services/state/zustand/user-store';
 import { updateUser } from '../../services/api/user-service';
+import { ToastType } from '../../utils/types';
+import showToast from '../../utils/common-toasts';
 
 const Profile = () => {
   const { name, email, contactNumber, lastName, uid } = useUserStore()
   const [loading, setLoading] = useState(false)
 
   const editUser = async (data: any) => {
-    data.uid = uid;
-    console.log('====================================');
-    console.log('PRESS');
-    console.log(data);
-    console.log('====================================');
-    await updateUser(data)
+    try {
+      data.uid = uid;
+      await updateUser(data)
+      showToast(ToastType.success, 'Usuario has been updated', 'Succesfully!')
+    } catch (error) {
+      showToast(ToastType.error, 'There is an error to update', 'Contact client service!')
+    }
   }
 
   const UserSchemaValidation = Yup.object().shape({

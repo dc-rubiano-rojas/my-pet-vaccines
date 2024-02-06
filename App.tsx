@@ -8,6 +8,7 @@ import { User, onAuthStateChanged } from 'firebase/auth';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import Toast from 'react-native-toast-message';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -106,6 +107,8 @@ export default function App() {
           }
 
         </Stack.Navigator>
+        <Toast />
+
       </NavigationContainer>
 
   );
