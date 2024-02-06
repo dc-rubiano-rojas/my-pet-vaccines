@@ -73,6 +73,12 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#fff'
     },
+    containerButtons: {
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 10
+    },
 });
 
 export default styles;

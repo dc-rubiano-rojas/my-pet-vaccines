@@ -8,6 +8,7 @@ export type DataFormMyType = {
 };
 
 export type FormDataToRegisterAPet = {
+  uid: string;
   Age: string;
   Breed: string;
   Color: string;
@@ -27,8 +28,18 @@ export type User = {
 };
 
 export type UserToRegister = {
+  uid: any;
   name: "";
   lastName: "";
   email: "";
   contactNumber: "";
+};
+
+export type Pet = {
+  name: "";
+  age: "";
+  gender: "";
+  weight: "";
+  breed: "";
+  color: "";
 };

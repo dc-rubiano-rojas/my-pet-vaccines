@@ -14,18 +14,35 @@ import CustomButton from '../../components/common/buttons/CustomButton'
 import { ScreenHeaderBtn } from '../../components'
 import styles from './register.style';
 import { DataFormMyType, User } from '../../utils/types';
+import useUserStore from '../../services/state/zustand/user-store';
 
 const Register = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)
+  const { updateUser } = useUserStore()
+
   const auth = FIREBASE_AUTH
 
-  const registerNewUser = async (data: DataFormMyType | any) => {
+  const registerNewUser = async (data: any) => {
     setLoading(true)
     try {
-      const response = await createUserWithEmailAndPassword(auth, data.Email, data.Password)
-      // FIXME: add datos del form
+      console.log('====================================');
+      console.log('pasa');
+      console.log('====================================');
+
+      const response = await createUserWithEmailAndPassword(auth, data.email, data.password)
       const userToSave: User = response.user.providerData[0]
-      await addDoc(collection(FIRESTORE_DB, 'users'), { ...userToSave })
+      const responseCol = await addDoc(collection(FIRESTORE_DB, 'users'), {
+        uid: data.email,
+        email: data.email,
+        name: data.name,
+        lastName: data.lastname,
+        contactNumber: data.contactNumber,
+        password: data.password,
+      })
+      console.log('====================================');
+      console.log('responseCol');
+      console.log(responseCol);
+      console.log('====================================');
 
     } catch (error: any) {
       console.log(error);
@@ -81,49 +98,63 @@ const Register = ({ navigation }: any) => {
             isValid
           }): any => (
             <>
-              <TextInput placeholder='Name' style={styles.input} value={values.name}
+              <TextInput placeholder='Name'
+                style={styles.input}
+                value={values.name}
                 onChangeText={handleChange('name')}
                 onBlur={() => setFieldTouched('name')} />
               {errors.name ? (
                 <Text style={styles.errorText}>{errors.name}</Text>
               ) : null}
 
-              <TextInput placeholder='Lastname' style={styles.input} value={values.lastname}
+              <TextInput placeholder='Lastname'
+                style={styles.input}
+                value={values.lastname}
                 onChangeText={handleChange('lastname')}
                 onBlur={() => setFieldTouched('lastname')} />
               {errors.lastname ? (
                 <Text style={styles.errorText}>{errors.lastname}</Text>
               ) : null}
 
-              <TextInput placeholder='Email' style={styles.input} value={values.email}
+              <TextInput placeholder='Email'
+                style={styles.input}
+                value={values.email}
                 onChangeText={handleChange('email')}
                 onBlur={() => setFieldTouched('email')} />
               {errors.email ? (
                 <Text style={styles.errorText}>{errors.email}</Text>
               ) : null}
 
-              <TextInput placeholder='Confirm Email' style={styles.input} value={values.confirmEmail}
+              <TextInput placeholder='Confirm Email'
+                style={styles.input}
+                value={values.confirmEmail}
                 onChangeText={handleChange('confirmEmail')}
                 onBlur={() => setFieldTouched('confirmEmail')} />
               {errors.confirmEmail ? (
                 <Text style={styles.errorText}>{errors.confirmEmail}</Text>
               ) : null}
 
-              <TextInput placeholder='Password' style={styles.input} value={values.confirmEmail}
+              <TextInput placeholder='Password'
+                style={styles.input}
+                value={values.password}
                 onChangeText={handleChange('password')}
                 onBlur={() => setFieldTouched('password')} />
               {errors.password ? (
                 <Text style={styles.errorText}>{errors.password}</Text>
               ) : null}
 
-              <TextInput placeholder='Confirm Password' style={styles.input} value={values.confirmEmail}
+              <TextInput placeholder='Confirm Password'
+                style={styles.input}
+                value={values.confirmPassword}
                 onChangeText={handleChange('confirmPassword')}
                 onBlur={() => setFieldTouched('confirmPassword')} />
               {errors.confirmPassword ? (
                 <Text style={styles.errorText}>{errors.confirmPassword}</Text>
               ) : null}
 
-              <TextInput placeholder='Contact Number' style={styles.input} value={values.confirmEmail}
+              <TextInput placeholder='Contact Number'
+                style={styles.input}
+                value={values.contactNumber}
                 onChangeText={handleChange('contactNumber')}
                 onBlur={() => setFieldTouched('contactNumber')} />
               {errors.contactNumber ? (
@@ -148,7 +179,7 @@ const Register = ({ navigation }: any) => {
 
 
       </View>
-      
+
     </SafeAreaView>
 
   )

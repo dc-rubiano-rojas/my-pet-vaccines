@@ -1,31 +1,30 @@
 import { create } from "zustand";
-import { UserToRegister } from "../../../utils/types";
+import { Pet, UserToRegister } from "../../../utils/types";
 
 type PetState = {
-  id: string;
-  name: string;
-  lastName: string;
-  email: string;
-  contactNumber: string;
+  pets: Array<Pet>;
 };
 
 type PetAction = {
-  updatePet: (user: UserToRegister) => void;
+  updatePet: (pet: Pet) => void;
 };
 
 // Create your store, which includes both state and (optionally) actions
-const usePetStore = create<PetAction & PetState>((set) => ({
-  id: "",
-  name: "",
-  lastName: "",
-  email: "",
-  contactNumber: "",
-  updatePet: (user: UserToRegister) =>
+const usePetStore = create<PetState & PetAction>((set) => ({
+  pets: [],
+  updatePet: (pet: Pet) =>
     set((state) => ({
-      name: user.name,
-      lastName: user.lastName,
-      email: user.email,
-      contactNumber: user.contactNumber,
+      pets: [
+        ...state.pets,
+        {
+          name: pet.name,
+          age: pet.age,
+          gender: pet.gender,
+          weight: pet.weight,
+          breed: pet.breed,
+          color: pet.color,
+        },
+      ],
     })),
 }));
 

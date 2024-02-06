@@ -12,15 +12,18 @@ import CustomButton from '../../components/common/buttons/CustomButton';
 import { Controller, useForm } from 'react-hook-form';
 import { FIRESTORE_DB } from '../../../firebaseConfig';
 import { FormDataToRegisterAPet } from '../../utils/types';
+import useUserStore from '../../services/state/zustand/user-store';
 
 const PetRegister = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)
+  const { email } = useUserStore()
 
   const handleButton = async (data: FormDataToRegisterAPet | any, { resetForm }: any) => {
     console.log(data)
+
     try {
       setLoading(true)
-      await addDoc(collection(FIRESTORE_DB, 'pets'), { ...data })
+      await addDoc(collection(FIRESTORE_DB, 'pets'), { ...data, uid: email })
     } catch (error: any) {
       alert('register in failed: ' + error.message)
     } finally {

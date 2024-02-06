@@ -1,8 +1,8 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, updateDoc, where, doc } from "firebase/firestore";
 
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { DataFormMyType, User } from "../../utils/types";
+import { DataFormMyType, User, UserToRegister } from "../../utils/types";
 
 const auth = FIREBASE_AUTH
 const db = FIRESTORE_DB
@@ -10,8 +10,21 @@ const db = FIRESTORE_DB
 export function getUser(id: string) {
 
 }
-export function updateUser(id: string) {
-
+export async function updateUser(user: UserToRegister) {
+    console.log('====================================');
+    console.log('UPDATE USER');
+    console.log(user);
+    console.log('====================================');
+    try {
+        /* const ref = doc(FIRESTORE_DB, `users/nqSxJEWAYJ0GENrypvjZ`) */
+        const ref = doc(FIRESTORE_DB, `users/${user.uid}`)
+        await updateDoc(ref, { ...user })
+    } catch (error: any) {
+        console.log('====================================');
+        console.log('error: ', { error, message: error.message });
+        console.log('====================================');
+        throw new Error('Error trying to singin')
+    }
 }
 export function deleteUser(id: string) {
 
@@ -38,10 +51,10 @@ export async function register(data: DataFormMyType | any) {
         const response = await createUserWithEmailAndPassword(auth, data.Email, data.Password)
         const userToSave: User = response.user.providerData[0]
         await addDoc(collection(FIRESTORE_DB, 'users'), { ...userToSave })
-  
-      } catch (error: any) {
+
+    } catch (error: any) {
         console.log(error);
         alert('register in failed: ' + error.message)
-      } finally {
-      }
+    } finally {
+    }
 }

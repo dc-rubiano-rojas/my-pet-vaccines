@@ -14,20 +14,22 @@ import CustomButton from '../../components/common/buttons/CustomButton';
 import { ScreenHeader } from '../../components';
 import { Formik } from 'formik';
 import useUserStore from '../../services/state/zustand/user-store';
+import { updateUser } from '../../services/api/user-service';
 
 const Profile = () => {
-  const { control, handleSubmit } = useForm()
-  const { name, email, contactNumber } = useUserStore()
-  const handleButton = async () => {
+  const { name, email, contactNumber, lastName, uid } = useUserStore()
+  const [loading, setLoading] = useState(false)
 
-
+  const editUser = async (data: any) => {
+    data.uid = uid;
+    console.log('====================================');
+    console.log('PRESS');
+    console.log(data);
+    console.log('====================================');
+    await updateUser(data)
   }
 
-  const registerNewUser = async (data: any) => {
-
-  }
-
-  const ResgisterUserSchema = Yup.object().shape({
+  const UserSchemaValidation = Yup.object().shape({
     name: Yup.string()
       .min(2, 'Too Short!')
       .max(20, 'Too Long!')
@@ -58,13 +60,13 @@ const Profile = () => {
 
               <Formik
                 initialValues={{
-                  name: '',
-                  lastname: '',
-                  email: '',
-                  contactNumber: '',
+                  name: name,
+                  lastname: lastName,
+                  email: email,
+                  contactNumber: contactNumber,
                 }}
-                validationSchema={ResgisterUserSchema}
-                onSubmit={registerNewUser}
+                validationSchema={UserSchemaValidation}
+                onSubmit={editUser}
               >
                 {({
                   values,
@@ -75,34 +77,49 @@ const Profile = () => {
                   setFieldTouched,
                   isValid
                 }): any => (
+
+
                   <>
-                    <TextInput placeholder={'Name'} style={styles.input} value={values.name}
+                    <TextInput placeholder={'Name'}
+                      style={styles.input}
+                      value={values.name}
                       onChangeText={handleChange('name')}
                       onBlur={() => setFieldTouched('name')} />
-                    <TextInput placeholder='Lastname' style={styles.input} value={values.lastname}
+
+                    <TextInput placeholder='Lastname'
+                      style={styles.input}
+                      value={values.lastname}
                       onChangeText={handleChange('lastname')}
                       onBlur={() => setFieldTouched('lastname')} />
+
                     <TextInput placeholder='Email' style={styles.input}
                       onChangeText={handleChange('email')}
                       onBlur={() => setFieldTouched('email')}
-                      value={email}
+                      value={values.email}
                       editable={false} />
+
                     <TextInput placeholder={'Contact Number'}
                       style={styles.input}
-                      value={values.email}
+                      value={values.contactNumber}
                       onChangeText={handleChange('contactNumber')}
                       onBlur={() => setFieldTouched('contactNumber')}
                     />
+
+                    {loading ? <ActivityIndicator size='large' color='#0000ff' /> :
+                      <>
+                        <View style={styles.containerButtons}>
+                          <CustomButton
+                            handleOnPress={handleSubmit}
+                            title={'Edit'}
+                          />
+                        </View>
+                      </>
+                    }
 
                   </>
                 )}
 
               </Formik>
-
-              <CustomButton
-                handleOnPress={handleSubmit(handleButton)}
-                title={'Edit'}
-              />
 
             </View>
 

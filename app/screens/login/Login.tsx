@@ -28,8 +28,10 @@ const Login = ({ navigation }: any) => {
 
         const isUserInFirestore = await validationFirestore()
 
-        if (!validateForm() && isUserInFirestore) {
+        if (!validateForm() || !isUserInFirestore) {
             alert('Must be an error with your email')
+            setLoading(false)
+
             return
         }
         try {
@@ -54,10 +56,11 @@ const Login = ({ navigation }: any) => {
         const exist = data.docs.filter((doc) => {
             if (doc.data().email === email) {
                 updateUser({
-                    name: doc.data().displayName,
-                    lastName: '',
+                    uid: doc.id,
+                    name: doc.data().name,
+                    lastName: doc.data().lastName,
                     email: doc.data().email,
-                    contactNumber: doc.data().phoneNumber
+                    contactNumber: doc.data().contactNumber,
                 })
                 return doc
             }
