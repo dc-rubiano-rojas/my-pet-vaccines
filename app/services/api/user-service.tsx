@@ -2,7 +2,7 @@ import { addDoc, collection, getDocs, query, updateDoc, where, doc } from "fireb
 
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { DataFormMyType, User, UserToRegister } from "../../utils/types";
+import { User, UserToRegister } from "../../utils/types";
 
 const auth = FIREBASE_AUTH
 const db = FIRESTORE_DB
@@ -51,7 +51,7 @@ export async function login(email: string, password: string) {
         throw new Error('Error trying to singin')
     }
 }
-export async function register(data: DataFormMyType | any) {
+export async function register(data: any) {
     try {
         const response = await createUserWithEmailAndPassword(auth, data.Email, data.Password)
         const userToSave: User = response.user.providerData[0]
@@ -64,6 +64,6 @@ export async function register(data: DataFormMyType | any) {
     }
 }
 
-export async function logout() {
-    await FIREBASE_AUTH.signOut()
+export async function logoutService() {
+    return FIREBASE_AUTH.signOut()
 }

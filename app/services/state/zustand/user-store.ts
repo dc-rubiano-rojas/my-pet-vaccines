@@ -11,6 +11,7 @@ type UserState = {
 
 type UserAction = {
   updateUser: (user: UserToRegister) => void;
+  deleteUser: () => void;
 };
 
 // Create your store, which includes both state and (optionally) actions
@@ -27,6 +28,14 @@ const useUserStore = create<UserState & UserAction>((set) => ({
       lastname: user.lastname,
       email: user.email,
       contactNumber: user.contactNumber,
+    })),
+  deleteUser: () =>
+    set((state) => ({
+      uid: "",
+      name: "",
+      lastname: "",
+      email: "",
+      contactNumber: "",
     })),
 }));
 

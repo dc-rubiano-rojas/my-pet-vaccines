@@ -1,7 +1,6 @@
 import { View, Text, SafeAreaView, TextInput, ActivityIndicator, Image, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { addDoc, collection } from 'firebase/firestore'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -9,23 +8,26 @@ import styles from './pet-register.style'
 import { COLORS, images } from '../../constants'
 import { ScreenHeader } from '../../components'
 import CustomButton from '../../components/common/buttons/CustomButton';
-import { Controller, useForm } from 'react-hook-form';
-import { FIRESTORE_DB } from '../../../firebaseConfig';
-import { FormDataToRegisterAPet } from '../../utils/types';
+import { FormDataToRegisterAPet, Pet } from '../../utils/types';
 import useUserStore from '../../services/state/zustand/user-store';
+import { addPetService } from '../../services/api/pet-service';
+import usePetStore from '../../services/state/zustand/pet-store';
 
 const PetRegister = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)
-  const { email } = useUserStore()
+  const { uid } = useUserStore()
+  const { addPet } = usePetStore()
+
 
   const handleButton = async (data: FormDataToRegisterAPet | any, { resetForm }: any) => {
-    console.log(data)
-
     try {
       setLoading(true)
-      await addDoc(collection(FIRESTORE_DB, 'pets'), { ...data, uid: email })
-    } catch (error: any) {
+      await addPetService(data, uid)
+      // FIXME: ADD PET TO STATE
+/*       addPet(...data as Pet, uid) 
+ */    } catch (error: any) {
       alert('register in failed: ' + error.message)
+      // FIXME: ADD TOAST - DELETE ALERT
     } finally {
       setLoading(false)
       navigation.navigate('Home')

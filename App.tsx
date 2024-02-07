@@ -23,7 +23,7 @@ import Profile from './app/screens/profile/UserProfile';
 import PetProfile from './app/screens/pet-profile/PetProfile';
 import Register from './app/screens/login/Register';
 import PetEditModal from './app/screens/modals/pet-edit/PetEditModal';
-import { getUser, logout } from './app/services/api/user-service';
+import { getUser } from './app/services/api/user-service';
 import useUserStore from './app/services/state/zustand/user-store';
 
 const Stack = createNativeStackNavigator();
@@ -97,24 +97,33 @@ export default function App() {
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, async (user: any) => {
 
-      const data = await getUser(user.email)
+      // FIXME: CUANDO FALLE GETUSER TRY CATCH
+      try {
+        const data = await getUser(user?.email)
+        console.log('====================================');
+        console.log('onAuthStateChanged');
+        console.log('====================================');
+        data?.docs.filter((doc) => {
+          if (doc.data().email === user.email) {
+            updateUser({
+              uid: doc.id,
+              name: doc.data().name,
+              lastname: doc.data().lastname,
+              email: doc.data().email,
+              contactNumber: doc.data().contactNumber,
+            })
 
-      const exist = data?.docs.filter((doc) => {
-        if (doc.data().email === user.email) {
-          updateUser({
-            uid: doc.id,
-            name: doc.data().name,
-            lastname: doc.data().lastname,
-            email: doc.data().email,
-            contactNumber: doc.data().contactNumber,
-          })
-          setUser(user)
-
-          return doc
-        }
-      })
-      if (exist && exist.length <= 0) {
-        await logout()
+            return doc
+          }
+        })
+      } catch (error: any) {
+        console.log('====================================');
+        console.log('ERROR');
+        console.log('onAuthStateChanged - getUser');
+        console.log({ error, message: error.message });
+        console.log('====================================');
+      } finally {
+        setUser(user)
       }
 
     })

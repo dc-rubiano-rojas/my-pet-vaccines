@@ -1,14 +1,7 @@
-export type DataFormMyType = {
-  Name: string;
-  Lastname: string;
-  Email: string;
-  "Confirm Email": string;
-  Password: string;
-  "Confirm Password": string;
-};
+
 
 export type FormDataToRegisterAPet = {
-  uid: string;
+  pid?: string
   Age: string;
   Breed: string;
   Color: string;
@@ -16,6 +9,7 @@ export type FormDataToRegisterAPet = {
   Height: string;
   Name: string;
   Weight: string;
+  uid: string[];
 };
 
 export type User = {
@@ -36,12 +30,14 @@ export type UserToRegister = {
 };
 
 export type Pet = {
+  pid?: "",
   name: "";
   age: "";
   gender: "";
   weight: "";
   breed: "";
   color: "";
+  uid: [""]
 };
 
 export enum ToastType {

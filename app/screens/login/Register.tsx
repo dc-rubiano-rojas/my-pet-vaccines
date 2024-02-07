@@ -13,7 +13,7 @@ import { TouchableOpacity, View } from 'react-native-ui-lib'
 import CustomButton from '../../components/common/buttons/CustomButton'
 import { ScreenHeaderBtn } from '../../components'
 import styles from './register.style';
-import { DataFormMyType, User } from '../../utils/types';
+import { User } from '../../utils/types';
 import useUserStore from '../../services/state/zustand/user-store';
 
 const Register = ({ navigation }: any) => {

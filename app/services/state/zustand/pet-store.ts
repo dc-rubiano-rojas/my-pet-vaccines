@@ -6,26 +6,35 @@ type PetState = {
 };
 
 type PetAction = {
-  updatePet: (pet: Pet) => void;
+  addPet: (pet: Pet, uid: string) => void;
+  reducePet: (pet: Pet) => void;
 };
 
 // Create your store, which includes both state and (optionally) actions
 const usePetStore = create<PetState & PetAction>((set) => ({
   pets: [],
-  updatePet: (pet: Pet) =>
+  addPet: (pet: Pet, uid: string) =>
     set((state) => ({
       pets: [
         ...state.pets,
         {
+          pid: pet.pid,
           name: pet.name,
           age: pet.age,
           gender: pet.gender,
           weight: pet.weight,
           breed: pet.breed,
           color: pet.color,
+          uid: [""],
         },
       ],
     })),
+  reducePet: (pet: Pet) =>
+    set((state) => {
+      return {
+        pets: state.pets.filter((p) => p.pid !== pet.pid),
+      };
+    }),
 }));
 
 export default usePetStore;

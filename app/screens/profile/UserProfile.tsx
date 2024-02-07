@@ -14,12 +14,12 @@ import CustomButton from '../../components/common/buttons/CustomButton';
 import { ScreenHeader } from '../../components';
 import { Formik } from 'formik';
 import useUserStore from '../../services/state/zustand/user-store';
-import { updateUser } from '../../services/api/user-service';
+import { logoutService, updateUser } from '../../services/api/user-service';
 import { ToastType } from '../../utils/types';
 import showToast from '../../utils/common-toasts';
 
 const Profile = () => {
-  const { name, email, contactNumber, lastname, uid } = useUserStore()
+  const { name, email, contactNumber, lastname, uid, deleteUser } = useUserStore()
   const [loading, setLoading] = useState(false)
 
   const editUser = async (data: any) => {
@@ -33,6 +33,20 @@ const Profile = () => {
       showToast(ToastType.success, 'Usuario has been updated', 'Succesfully!')
     } catch (error) {
       showToast(ToastType.error, 'There is an error to update', 'Contact client service!')
+    }
+  }
+  const handleLogout = async (data: any) => {
+    try {
+      console.log('====================================');
+      console.log('HANDLE LOGOUT');
+      console.log('====================================');
+      await logoutService()
+      deleteUser()
+    } catch (error) {
+      console.log('====================================');
+      console.log('ERROR LOGOUT');
+      console.log(error);
+      console.log('====================================');
     }
   }
 
@@ -134,9 +148,8 @@ const Profile = () => {
 
           </View>
 
-          <TouchableOpacity onPress={async () => await FIREBASE_AUTH.signOut()
-          } style={styles.logoutButton}>
-            <AntDesign name='logout' color={'red'} size={55} />
+          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+            <AntDesign name='logout' color={'red'} size={40} />
           </TouchableOpacity>
 
 
