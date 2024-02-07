@@ -30,7 +30,7 @@ export type User = {
 export type UserToRegister = {
   uid: any;
   name: "";
-  lastName: "";
+  lastname: "";
   email: "";
   contactNumber: "";
 };

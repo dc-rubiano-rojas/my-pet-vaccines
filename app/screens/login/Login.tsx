@@ -58,7 +58,7 @@ const Login = ({ navigation }: any) => {
                 updateUser({
                     uid: doc.id,
                     name: doc.data().name,
-                    lastName: doc.data().lastName,
+                    lastname: doc.data().lastname,
                     email: doc.data().email,
                     contactNumber: doc.data().contactNumber,
                 })

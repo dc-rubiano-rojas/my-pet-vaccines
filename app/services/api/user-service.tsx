@@ -7,7 +7,17 @@ import { DataFormMyType, User, UserToRegister } from "../../utils/types";
 const auth = FIREBASE_AUTH
 const db = FIRESTORE_DB
 
-export function getUser(id: string) {
+export async function getUser(email: string) {
+    try {
+        const userRef = collection(FIRESTORE_DB, 'users')
+        const messagesCollectionRef = query(userRef, where("email", "==", email));
+        return await getDocs(messagesCollectionRef);
+        //return data.docs.filter((doc: any) => doc.data().email === email)
+    } catch (error: any) {
+        console.log('====================================');
+        console.log('error: ', { error, message: error.message });
+        console.log('====================================');
+    }
 
 }
 export async function updateUser(user: UserToRegister) {
@@ -52,4 +62,8 @@ export async function register(data: DataFormMyType | any) {
         alert('register in failed: ' + error.message)
     } finally {
     }
+}
+
+export async function logout() {
+    await FIREBASE_AUTH.signOut()
 }

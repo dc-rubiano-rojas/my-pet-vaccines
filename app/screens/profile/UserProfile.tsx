@@ -19,12 +19,16 @@ import { ToastType } from '../../utils/types';
 import showToast from '../../utils/common-toasts';
 
 const Profile = () => {
-  const { name, email, contactNumber, lastName, uid } = useUserStore()
+  const { name, email, contactNumber, lastname, uid } = useUserStore()
   const [loading, setLoading] = useState(false)
 
   const editUser = async (data: any) => {
     try {
       data.uid = uid;
+      console.log('====================================');
+      console.log('data');
+      console.log(data);
+      console.log('====================================');
       await updateUser(data)
       showToast(ToastType.success, 'Usuario has been updated', 'Succesfully!')
     } catch (error) {
@@ -64,7 +68,7 @@ const Profile = () => {
               <Formik
                 initialValues={{
                   name: name,
-                  lastname: lastName,
+                  lastname: lastname,
                   email: email,
                   contactNumber: contactNumber,
                 }}

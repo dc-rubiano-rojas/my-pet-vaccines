@@ -35,7 +35,7 @@ const Register = ({ navigation }: any) => {
         uid: data.email,
         email: data.email,
         name: data.name,
-        lastName: data.lastname,
+        lastname: data.lastname,
         contactNumber: data.contactNumber,
         password: data.password,
       })

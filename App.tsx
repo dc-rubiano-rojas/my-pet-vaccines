@@ -23,6 +23,8 @@ import Profile from './app/screens/profile/UserProfile';
 import PetProfile from './app/screens/pet-profile/PetProfile';
 import Register from './app/screens/login/Register';
 import PetEditModal from './app/screens/modals/pet-edit/PetEditModal';
+import { getUser, logout } from './app/services/api/user-service';
+import useUserStore from './app/services/state/zustand/user-store';
 
 const Stack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
@@ -89,27 +91,49 @@ export default function App() {
   });
 
   const [user, setUser] = useState<User | null>(null)
+  const { updateUser } = useUserStore()
+
 
   useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      setUser(user)
+    onAuthStateChanged(FIREBASE_AUTH, async (user: any) => {
+
+      const data = await getUser(user.email)
+
+      const exist = data?.docs.filter((doc) => {
+        if (doc.data().email === user.email) {
+          updateUser({
+            uid: doc.id,
+            name: doc.data().name,
+            lastname: doc.data().lastname,
+            email: doc.data().email,
+            contactNumber: doc.data().contactNumber,
+          })
+          setUser(user)
+
+          return doc
+        }
+      })
+      if (exist && exist.length <= 0) {
+        await logout()
+      }
+
     })
   }, [])
 
 
   return (
 
-      <NavigationContainer >
-        <Stack.Navigator initialRouteName='Login'>
+    <NavigationContainer >
+      <Stack.Navigator initialRouteName='Login'>
 
-          {user ? <Stack.Screen name="Inside" component={InsideLayout} options={{ headerShown: false }} />
-            : <Stack.Screen name="LoginLayout" component={LoginLayout} options={{ headerShown: false }} />
-          }
+        {user ? <Stack.Screen name="Inside" component={InsideLayout} options={{ headerShown: false }} />
+          : <Stack.Screen name="LoginLayout" component={LoginLayout} options={{ headerShown: false }} />
+        }
 
-        </Stack.Navigator>
-        <Toast />
+      </Stack.Navigator>
+      <Toast />
 
-      </NavigationContainer>
+    </NavigationContainer>
 
   );
 }
