@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDgiPJxwx2130I6Z0WzW-ean9mDo3do7mc",
@@ -21,4 +22,5 @@ export const FIREBASE_AUTH = initializeAuth(FIREBASE_APP, {
 
 export const FIRESTORE_DB = getFirestore(FIREBASE_APP);
 
+export const FIREBASE_STORAGE = getStorage(FIREBASE_APP, "gs://my-pet-vaccines.appspot.com");
 

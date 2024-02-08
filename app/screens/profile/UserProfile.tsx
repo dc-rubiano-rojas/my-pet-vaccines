@@ -23,6 +23,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(false)
 
   const editUser = async (data: any) => {
+    setLoading(true)
     try {
       data.uid = uid;
       console.log('====================================');
@@ -33,6 +34,8 @@ const Profile = () => {
       showToast(ToastType.success, 'Usuario has been updated', 'Succesfully!')
     } catch (error) {
       showToast(ToastType.error, 'There is an error to update', 'Contact client service!')
+    } finally {
+      setLoading(false)
     }
   }
   const handleLogout = async (data: any) => {
@@ -99,6 +102,7 @@ const Profile = () => {
                   isValid
                 }): any => (
 
+                  
 
                   <>
                     <TextInput placeholder={'Name'}

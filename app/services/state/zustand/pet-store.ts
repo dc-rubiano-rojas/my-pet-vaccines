@@ -13,7 +13,7 @@ type PetAction = {
 // Create your store, which includes both state and (optionally) actions
 const usePetStore = create<PetState & PetAction>((set) => ({
   pets: [],
-  addPet: (pet: Pet, uid: string) =>
+  addPet: (pet: Pet) =>
     set((state) => ({
       pets: [
         ...state.pets,
@@ -25,7 +25,7 @@ const usePetStore = create<PetState & PetAction>((set) => ({
           weight: pet.weight,
           breed: pet.breed,
           color: pet.color,
-          uid: [""],
+          uid: pet.uid,
         },
       ],
     })),
