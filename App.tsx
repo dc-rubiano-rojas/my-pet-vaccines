@@ -95,22 +95,27 @@ export default function App() {
 
 
   useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, async (user: any) => {
+    onAuthStateChanged(FIREBASE_AUTH, async (userAuthState: any) => {
 
       // FIXME: CUANDO FALLE GETUSER TRY CATCH
       try {
-        const data = await getUser(user?.email)
+        const data = await getUser(userAuthState?.email)
         console.log('====================================');
         console.log('onAuthStateChanged');
         console.log('====================================');
+        console.log(user);
+        console.log('====================================');
+        console.log('====================================');
         data?.docs.filter((doc) => {
-          if (doc.data().email === user.email) {
+          if (doc.data().email === userAuthState.email) {
+            // STORE
             updateUser({
               uid: doc.id,
               name: doc.data().name,
               lastname: doc.data().lastname,
               email: doc.data().email,
               contactNumber: doc.data().contactNumber,
+              petsId: doc.data().petsId
             })
 
             return doc

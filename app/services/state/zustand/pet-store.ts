@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Pet, UserToRegister } from "../../../utils/types";
+import { Pet } from "../../../utils/types";
 
 type PetState = {
   pets: Array<Pet>;
@@ -26,6 +26,7 @@ const usePetStore = create<PetState & PetAction>((set) => ({
           breed: pet.breed,
           color: pet.color,
           uid: pet.uid,
+          image: pet.image
         },
       ],
     })),

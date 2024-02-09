@@ -8,26 +8,27 @@ import * as Yup from 'yup';
 
 import * as ImagePicker from 'expo-image-picker'
 
-
 import styles from './pet-register.style'
 import { COLORS, images } from '../../constants'
 import { ScreenHeader } from '../../components'
 import CustomButton from '../../components/common/buttons/CustomButton';
-import { FormDataToRegisterAPet, Pet } from '../../utils/types';
+import { FormDataToRegisterAPet, Pet, ToastType, UserToUpdate } from '../../utils/types';
 import useUserStore from '../../services/state/zustand/user-store';
 import { addPetService } from '../../services/api/pet-service';
 import usePetStore from '../../services/state/zustand/pet-store';
 
 import { FIREBASE_STORAGE } from '../../../firebaseConfig';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import showToast from '../../utils/common-toasts';
 
 const PetRegister = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [image, setImage] = useState('')
-  const { uid } = useUserStore()
-  const { addPet } = usePetStore()
+  const { name, email, contactNumber, lastname, uid, petsId, updateUser } = useUserStore()
 
+  const { addPet } = usePetStore()
+  
   const setUpload = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -48,7 +49,7 @@ const PetRegister = ({ navigation }: any) => {
       const response = await fetch(image)
       const blob = await response.blob()
 
-      const storageRef = ref(FIREBASE_STORAGE, 'Stuff/' + new Date().getTime())
+      const storageRef = ref(FIREBASE_STORAGE, 'Pets/' + new Date().getTime())
       const uploadTask = uploadBytesResumable(storageRef, blob)
       uploadTask.on('state_changed',
         (snapshot) => {
@@ -57,6 +58,11 @@ const PetRegister = ({ navigation }: any) => {
           console.log('progress');
           console.log(progress);
           console.log('====================================');
+          if(progress === 1) {
+            setLoading(false)
+            showToast(ToastType.success, 'Pet has been created', 'Succesfully!')
+            return
+          }
         },
         (error) => {
           // Handle error
@@ -84,21 +90,30 @@ const PetRegister = ({ navigation }: any) => {
     try {
       setLoading(true)
 
-      // FIXME: ADD IMAGE
       await uploadImage()
-
+      
       data.image = image
-      await addPetService(data, uid)
+      const petId = await addPetService(data, uid)
+      //await updateUser()
+      data.pid = petId
+
+      // TODO: Update user
 
       // FIXME: ADD PET TO STATE
-/*       addPet(...data as Pet, uid) 
- */    } catch (error: any) {
-      alert('register in failed: ' + error.message)
-      // FIXME: ADD TOAST - DELETE ALERT
-    } finally {
+      addPet(data as Pet, uid)
+      //pid.push(petId)
+      updateUser({
+        uid,
+        name,
+        lastname,
+        email,
+        contactNumber,
+        petsId
+      } as UserToUpdate)
+    } catch (error: any) {
       setLoading(false)
-      navigation.navigate('Home')
-    }
+      showToast(ToastType.error, 'There is an error', 'Contact client service!')
+    } 
   }
 
   const ResgisterPetSchema = Yup.object().shape({
@@ -125,7 +140,7 @@ const PetRegister = ({ navigation }: any) => {
             height: 100,
             resizeMode: 'contain',
             borderRadius: 10
-          }}/> : <Entypo name='upload-to-cloud' color={COLORS.primary} size={80} />}
+          }} /> : <Entypo name='upload-to-cloud' color={COLORS.primary} size={80} />}
 
 
         </TouchableOpacity>

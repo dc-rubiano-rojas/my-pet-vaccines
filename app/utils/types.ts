@@ -27,6 +27,15 @@ export type UserToRegister = {
   lastname: "";
   email: "";
   contactNumber: "";
+  petsId: []
+};
+export type UserToUpdate = {
+  uid: any;
+  name: "";
+  lastname: "";
+  email: "";
+  contactNumber: "";
+  petsId: []
 };
 
 export type Pet = {
@@ -37,7 +46,8 @@ export type Pet = {
   weight: "";
   breed: "";
   color: "";
-  uid: [""]
+  uid: [""];
+  image: ""
 };
 
 export enum ToastType {

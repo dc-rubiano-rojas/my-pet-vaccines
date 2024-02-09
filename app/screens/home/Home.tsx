@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { View, Text, Colors, TouchableOpacity, Image } from 'react-native-ui-lib';
@@ -12,6 +12,8 @@ import styles from './home.style';
 import { COLORS, images } from '../../constants';
 import { ScreenHeader, ScreenHeaderBtn } from '../../components';
 import CustomButton from '../../components/common/buttons/CustomButton';
+import { getPets } from '../../services/api/pet-service';
+import useUserStore from '../../services/state/zustand/user-store';
 
 interface RouterProps {
     navigation: NavigationProp<any, any>;
@@ -23,6 +25,23 @@ const handleButton = async () => {
 
 const Home = ({ navigation }: RouterProps) => {
     const onPress = () => navigation.navigate('Pet Register')
+    const [pets, setPets] = useState([])
+
+    const { name, email, contactNumber, lastname, uid, deleteUser } = useUserStore()
+
+
+    useEffect(() => {
+        const fetchPetData = async () => {
+            const pets = await getPets(uid)
+            console.log('====================================');
+            console.log('USE EFFECT DATA');
+            console.log(pets);
+            console.log('====================================');
+            //setPets(pets)
+        };
+        fetchPetData();
+    }, [])
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>

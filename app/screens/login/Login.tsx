@@ -26,15 +26,15 @@ const Login = ({ navigation }: any) => {
     const signIn = async () => {
         setLoading(true)
 
-        const isUserInFirestore = await validationFirestore()
-
-        if (!validateForm() || !isUserInFirestore) {
-            alert('Must be an error with your email')
-            setLoading(false)
-
-            return
-        }
         try {
+            const isUserInFirestore = await validationFirestore()
+    
+            if (!validateForm() || !isUserInFirestore) {
+                alert('Must be an error with your email')
+                setLoading(false)
+    
+                return
+            }
             const response = await signInWithEmailAndPassword(auth, email, password)
 
             console.log(response);
@@ -61,6 +61,7 @@ const Login = ({ navigation }: any) => {
                     lastname: doc.data().lastname,
                     email: doc.data().email,
                     contactNumber: doc.data().contactNumber,
+                    petsId: doc.data().petsId
                 })
                 return doc
             }

@@ -2,12 +2,12 @@ import { addDoc, collection, getDocs, query, updateDoc, where, doc } from "fireb
 
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { User, UserToRegister } from "../../utils/types";
+import { User, UserToRegister, UserToUpdate } from "../../utils/types";
 
 const auth = FIREBASE_AUTH
 const db = FIRESTORE_DB
 
-export async function getUser(email: string) {
+export async function getUser(email = '') {
     try {
         const userRef = collection(FIRESTORE_DB, 'users')
         const messagesCollectionRef = query(userRef, where("email", "==", email));
@@ -20,7 +20,8 @@ export async function getUser(email: string) {
     }
 
 }
-export async function updateUser(user: UserToRegister) {
+
+export async function updateUser(user: UserToUpdate) {
     try {
         const ref = doc(FIRESTORE_DB, `users/${user.uid}`)
         await updateDoc(ref, { ...user })
@@ -31,9 +32,7 @@ export async function updateUser(user: UserToRegister) {
         throw new Error('Error trying to singin')
     }
 }
-export function deleteUser(id: string) {
 
-}
 export async function login(email: string, password: string) {
     try {
         const userRef = collection(FIRESTORE_DB, 'users')
@@ -51,9 +50,12 @@ export async function login(email: string, password: string) {
         throw new Error('Error trying to singin')
     }
 }
-export async function register(data: any) {
+
+export async function registerUserService(data: any) {
     try {
-        const response = await createUserWithEmailAndPassword(auth, data.Email, data.Password)
+        const myAuth = FIREBASE_AUTH
+
+        const response = await createUserWithEmailAndPassword(myAuth, data.Email, data.Password)
         const userToSave: User = response.user.providerData[0]
         await addDoc(collection(FIRESTORE_DB, 'users'), { ...userToSave })
 

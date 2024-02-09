@@ -7,6 +7,7 @@ type UserState = {
   lastname: string;
   email: string;
   contactNumber: string;
+  petsId: string[]
 };
 
 type UserAction = {
@@ -21,6 +22,7 @@ const useUserStore = create<UserState & UserAction>((set) => ({
   lastname: "",
   email: "",
   contactNumber: "",
+  petsId: [],
   updateUser: (user: UserToRegister) =>
     set((state) => ({
       uid: user.uid,
@@ -28,6 +30,7 @@ const useUserStore = create<UserState & UserAction>((set) => ({
       lastname: user.lastname,
       email: user.email,
       contactNumber: user.contactNumber,
+      petsId: [...user.petsId]
     })),
   deleteUser: () =>
     set((state) => ({
@@ -36,6 +39,7 @@ const useUserStore = create<UserState & UserAction>((set) => ({
       lastname: "",
       email: "",
       contactNumber: "",
+      petsId: []
     })),
 }));
 
