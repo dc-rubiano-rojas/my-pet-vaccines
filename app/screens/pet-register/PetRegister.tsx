@@ -37,7 +37,7 @@ const PetRegister = ({ navigation }: any) => {
   const { name, email, contactNumber, lastname, uid, petsId, updateUser: updateUserStore } = useUserStore()
 
   const { addPet: addPetStore } = usePetStore()
-  
+
   const setUpload = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -67,7 +67,7 @@ const PetRegister = ({ navigation }: any) => {
           console.log('progress');
           console.log(progress);
           console.log('====================================');
-          if(progress === 1) {
+          if (progress === 1) {
             setLoading(false)
             showToast(ToastType.success, 'Pet has been created', 'Succesfully!')
             return
@@ -83,6 +83,7 @@ const PetRegister = ({ navigation }: any) => {
             console.log('downloadUrl');
             console.log(downloadURL);
             console.log('====================================');
+            setImage("")
             //setImage(downloadUrl)
           })
         }
@@ -100,14 +101,21 @@ const PetRegister = ({ navigation }: any) => {
       setLoading(true)
 
       await uploadImage()
-      
+
       data.image = image
       const petId = await addPetService(data, uid)
       //await updateUser()
       data.pid = petId
 
       // TODO: Update user
-      //updateUserService()
+      updateUserService({
+        name,
+        email,
+        contactNumber,
+        lastname,
+        uid,
+        petsId: [...petsId, data.pid],
+      })
 
       // FIXME: ADD PET TO STATE
       addPetStore(data as Pet, uid)
@@ -118,8 +126,8 @@ const PetRegister = ({ navigation }: any) => {
         lastname,
         email,
         contactNumber,
-        petsId
-      } as UserToUpdate)
+        petsId: [...petsId, data.pid],
+      })
     } catch (error: any) {
       setLoading(false)
       showToast(ToastType.error, 'There is an error', 'Contact client service!')

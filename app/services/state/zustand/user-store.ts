@@ -11,7 +11,7 @@ type UserState = {
 };
 
 type UserAction = {
-  updateUser: (user: UserToRegister) => void;
+  updateUser: (user: UserToRegister | UserToUpdate) => void;
   deleteUser: () => void;
 };
 

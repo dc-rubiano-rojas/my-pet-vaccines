@@ -35,7 +35,7 @@ export type UserToUpdate = {
   lastname: string;
   email: string;
   contactNumber: string;
-  petsId: []
+  petsId: string[]
 };
 
 export type Pet = {
