@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TextInput, ActivityIndicator, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Entypo from 'react-native-vector-icons/Entypo';
 
@@ -20,14 +20,23 @@ import usePetStore from '../../services/state/zustand/pet-store';
 import { FIREBASE_STORAGE } from '../../../firebaseConfig';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import showToast from '../../utils/common-toasts';
+import { updateUserService } from '../../services/api/user-service';
 
 const PetRegister = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [initialValues, setInitialValues] = useState({
+    name: '',
+    age: '',
+    gender: '',
+    weight: '',
+    breed: '',
+    color: '',
+  })
   const [image, setImage] = useState('')
-  const { name, email, contactNumber, lastname, uid, petsId, updateUser } = useUserStore()
+  const { name, email, contactNumber, lastname, uid, petsId, updateUser: updateUserStore } = useUserStore()
 
-  const { addPet } = usePetStore()
+  const { addPet: addPetStore } = usePetStore()
   
   const setUpload = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({
@@ -98,11 +107,12 @@ const PetRegister = ({ navigation }: any) => {
       data.pid = petId
 
       // TODO: Update user
+      //updateUserService()
 
       // FIXME: ADD PET TO STATE
-      addPet(data as Pet, uid)
+      addPetStore(data as Pet, uid)
       //pid.push(petId)
-      updateUser({
+      updateUserStore({
         uid,
         name,
         lastname,
@@ -113,7 +123,9 @@ const PetRegister = ({ navigation }: any) => {
     } catch (error: any) {
       setLoading(false)
       showToast(ToastType.error, 'There is an error', 'Contact client service!')
-    } 
+    } finally {
+      resetForm()
+    }
   }
 
   const ResgisterPetSchema = Yup.object().shape({
@@ -166,7 +178,8 @@ const PetRegister = ({ navigation }: any) => {
                 handleSubmit,
                 handleChange,
                 setFieldTouched,
-                isValid
+                isValid,
+                resetForm
               }): any => (
                 <>
                   <TextInput placeholder='Name' style={styles.input} value={values.name}

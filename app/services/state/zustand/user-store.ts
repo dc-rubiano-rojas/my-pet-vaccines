@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { UserToRegister } from "../../../utils/types";
+import { UserToRegister, UserToUpdate } from "../../../utils/types";
 
 type UserState = {
   uid: any;
@@ -7,7 +7,7 @@ type UserState = {
   lastname: string;
   email: string;
   contactNumber: string;
-  petsId: string[]
+  petsId: string[];
 };
 
 type UserAction = {
@@ -23,14 +23,14 @@ const useUserStore = create<UserState & UserAction>((set) => ({
   email: "",
   contactNumber: "",
   petsId: [],
-  updateUser: (user: UserToRegister) =>
+  updateUser: (user: UserToRegister | UserToUpdate) =>
     set((state) => ({
       uid: user.uid,
       name: user.name,
       lastname: user.lastname,
       email: user.email,
       contactNumber: user.contactNumber,
-      petsId: [...user.petsId]
+      petsId: [...user.petsId],
     })),
   deleteUser: () =>
     set((state) => ({
@@ -39,7 +39,7 @@ const useUserStore = create<UserState & UserAction>((set) => ({
       lastname: "",
       email: "",
       contactNumber: "",
-      petsId: []
+      petsId: [],
     })),
 }));
 

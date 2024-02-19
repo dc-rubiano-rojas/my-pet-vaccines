@@ -31,10 +31,10 @@ export type UserToRegister = {
 };
 export type UserToUpdate = {
   uid: any;
-  name: "";
-  lastname: "";
-  email: "";
-  contactNumber: "";
+  name: string;
+  lastname: string;
+  email: string;
+  contactNumber: string;
   petsId: []
 };
 

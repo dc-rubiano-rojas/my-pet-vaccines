@@ -103,7 +103,7 @@ export default function App() {
         console.log('====================================');
         console.log('onAuthStateChanged');
         console.log('====================================');
-        console.log(user);
+        console.log(userAuthState);
         console.log('====================================');
         console.log('====================================');
         data?.docs.filter((doc) => {
@@ -128,7 +128,7 @@ export default function App() {
         console.log({ error, message: error.message });
         console.log('====================================');
       } finally {
-        setUser(user)
+        setUser(userAuthState)
       }
 
     })

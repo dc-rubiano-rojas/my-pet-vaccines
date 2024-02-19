@@ -21,7 +21,7 @@ export async function getUser(email = '') {
 
 }
 
-export async function updateUser(user: UserToUpdate) {
+export async function updateUserService(user: UserToUpdate) {
     try {
         const ref = doc(FIRESTORE_DB, `users/${user.uid}`)
         await updateDoc(ref, { ...user })
@@ -53,11 +53,11 @@ export async function login(email: string, password: string) {
 
 export async function registerUserService(data: any) {
     try {
-        const myAuth = FIREBASE_AUTH
+       // const myAuth = FIREBASE_AUTH
 
-        const response = await createUserWithEmailAndPassword(myAuth, data.Email, data.Password)
-        const userToSave: User = response.user.providerData[0]
-        await addDoc(collection(FIRESTORE_DB, 'users'), { ...userToSave })
+        //const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, data.Email, data.Password)
+        //const userToSave: User = response.user.providerData[0]
+        await addDoc(collection(FIRESTORE_DB, 'users'), { ...data })
 
     } catch (error: any) {
         console.log(error);

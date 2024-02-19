@@ -14,7 +14,7 @@ import CustomButton from '../../components/common/buttons/CustomButton';
 import { ScreenHeader } from '../../components';
 import { Formik } from 'formik';
 import useUserStore from '../../services/state/zustand/user-store';
-import { logoutService, updateUser } from '../../services/api/user-service';
+import { logoutService, updateUserService } from '../../services/api/user-service';
 import { ToastType } from '../../utils/types';
 import showToast from '../../utils/common-toasts';
 
@@ -30,7 +30,7 @@ const Profile = () => {
       console.log('data');
       console.log(data);
       console.log('====================================');
-      await updateUser(data)
+      await updateUserService(data)
       showToast(ToastType.success, 'Usuario has been updated', 'Succesfully!')
     } catch (error) {
       showToast(ToastType.error, 'There is an error to update', 'Contact client service!')

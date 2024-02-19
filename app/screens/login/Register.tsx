@@ -11,14 +11,16 @@ import { SafeAreaView, Image } from 'react-native';
 import { COLORS, images } from '../../constants'
 import { TouchableOpacity, View } from 'react-native-ui-lib'
 import CustomButton from '../../components/common/buttons/CustomButton'
+import { ScreenHeaderBtn } from '../../components'
 import styles from './register.style';
 import { User } from '../../utils/types';
 import useUserStore from '../../services/state/zustand/user-store';
-import { registerUserService } from '../../services/api/user-service';
 
 const Register = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)
   const { updateUser } = useUserStore()
+
+  const auth = FIREBASE_AUTH
 
   const registerNewUser = async (data: any) => {
     setLoading(true)
@@ -27,7 +29,7 @@ const Register = ({ navigation }: any) => {
       console.log('pasa');
       console.log('====================================');
 
-/*       const response = await createUserWithEmailAndPassword(auth, data.email, data.password)
+      const response = await createUserWithEmailAndPassword(auth, data.email, data.password)
       const userToSave: User = response.user.providerData[0]
       const responseCol = await addDoc(collection(FIRESTORE_DB, 'users'), {
         uid: data.email,
@@ -37,20 +39,11 @@ const Register = ({ navigation }: any) => {
         contactNumber: data.contactNumber,
         password: data.password,
         petsId: []
-      }) */
-      await registerUserService({
-        uid: data.email,
-        email: data.email,
-        name: data.name,
-        lastname: data.lastname,
-        contactNumber: data.contactNumber,
-        password: data.password,
-        petsId: []
       })
-/*       console.log('====================================');
+      console.log('====================================');
       console.log('responseCol');
       console.log(responseCol);
-      console.log('===================================='); */
+      console.log('====================================');
 
     } catch (error: any) {
       console.log(error);
