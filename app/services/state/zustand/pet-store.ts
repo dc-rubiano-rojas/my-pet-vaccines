@@ -6,7 +6,7 @@ type PetState = {
 };
 
 type PetAction = {
-  addPet: (pet: Pet, uid: string) => void;
+  addPet: (pet: Pet) => void;
   reducePet: (pet: Pet) => void;
 };
 

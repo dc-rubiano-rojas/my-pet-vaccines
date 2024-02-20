@@ -38,6 +38,12 @@ const PetRegister = ({ navigation }: any) => {
 
   const { addPet: addPetStore } = usePetStore()
 
+/*   useEffect(() => {
+    setImage("")
+
+  },[]) */
+
+
   const setUpload = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -118,7 +124,7 @@ const PetRegister = ({ navigation }: any) => {
       })
 
       // FIXME: ADD PET TO STATE
-      addPetStore(data as Pet, uid)
+      addPetStore(data as Pet)
       //pid.push(petId)
       updateUserStore({
         uid,

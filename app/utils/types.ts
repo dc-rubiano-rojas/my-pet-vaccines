@@ -49,6 +49,17 @@ export type Pet = {
   uid: [""];
   image: ""
 };
+export type PetDataToManage = {
+  pid?: "",
+  name: "";
+  age: "";
+  gender: "";
+  weight: "";
+  breed: "";
+  color: "";
+  uid: [""];
+  image: ""
+};
 
 export enum ToastType {
   success = 'success',

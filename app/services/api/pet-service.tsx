@@ -14,11 +14,19 @@ export async function saveImagePetService(pet: Pet, uid: string) {
 }
 
 
-export async function getPets(pid: string) {
-    const ref = doc(FIRESTORE_DB, `pets/${pid}`)
-    const data = await getDoc(ref);
-
-    return data
+export async function getPetService(pid: string) {
+    try {
+        
+        const ref = doc(FIRESTORE_DB, `pets/${pid}`)
+        const data = await getDoc(ref);
+    
+        return data
+    } catch (error) {
+        console.log('====================================');
+        console.log('error - getPetService');
+        console.log(error);
+        console.log('====================================');
+    }
 }
 export function getPet(id: string) {
 

@@ -1,38 +1,58 @@
 import { Text, Button, StyleSheet, TextInput, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import { SafeAreaView, Image } from 'react-native';
 import { collection, addDoc, onSnapshot, query, where, getDocs } from "firebase/firestore";
 import { FIREBASE_AUTH, FIRESTORE_DB } from '../../../firebaseConfig'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+
 import styles from './login.style'
-import { SafeAreaView, Image } from 'react-native';
 import { COLORS, images } from '../../constants'
 import { TouchableOpacity, View } from 'react-native-ui-lib'
 import LoginButton from '../../components/common/buttons/CustomButton'
 import { ScreenHeaderBtn } from '../../components'
 import { User } from '../../utils/types';
 import useUserStore from '../../services/state/zustand/user-store';
+import { getPetService } from '../../services/api/pet-service';
+import usePetStore from '../../services/state/zustand/pet-store';
 
 const Login = ({ navigation }: any) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState({ email: '', password: '' })
-
-    const { updateUser } = useUserStore()
+    const { addPet } = usePetStore()
+    const { uid,updateUser } = useUserStore()
 
     const auth = FIREBASE_AUTH
     const db = FIRESTORE_DB
+
+    const savePetsInfo = async (petsId: any) => {
+        for (const petId of petsId) {
+            const pet: any = await getPetService(petId) || []
+            // Note: add pet to store
+            addPet({
+                name: pet.data().name,
+                age: pet.data().age,
+                gender: pet.data().gender,
+                weight: pet.data().weight,
+                breed: pet.data().breed,
+                color: pet.data().color,
+                uid: pet.data().uid,
+                image: pet.data().image
+            })
+        }
+    }
 
     const signIn = async () => {
         setLoading(true)
 
         try {
             const isUserInFirestore = await validationFirestore()
-    
+
             if (!validateForm() || !isUserInFirestore) {
                 alert('Must be an error with your email')
                 setLoading(false)
-    
+
                 return
             }
             const response = await signInWithEmailAndPassword(auth, email, password)
@@ -53,7 +73,7 @@ const Login = ({ navigation }: any) => {
         const userRef = collection(FIRESTORE_DB, 'users')
         const messagesCollectionRef = query(userRef, where("email", "==", email));
         const data = await getDocs(messagesCollectionRef);
-        const exist = data.docs.filter((doc) => {
+        const exist = data.docs.filter(async (doc) => {
             if (doc.data().email === email) {
                 updateUser({
                     uid: doc.id,
@@ -63,6 +83,7 @@ const Login = ({ navigation }: any) => {
                     contactNumber: doc.data().contactNumber,
                     petsId: doc.data().petsId
                 })
+                await savePetsInfo(doc.data().petsId)
                 return doc
             }
         })
