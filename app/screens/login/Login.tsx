@@ -83,7 +83,7 @@ const Login = ({ navigation }: any) => {
                     contactNumber: doc.data().contactNumber,
                     petsId: doc.data().petsId
                 })
-                await savePetsInfo(doc.data().petsId)
+                //await savePetsInfo(doc.data().petsId)
                 return doc
             }
         })
