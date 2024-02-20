@@ -43,14 +43,8 @@ const Home = ({ navigation }: RouterProps) => {
 
     useEffect(() => {
         const fetchPetData = async () => {
-
-
             for (const petId of petsId) {
                 const pet: any = await getPetService(petId) || []
-                console.log('====================================');
-                console.log('pets');
-                console.log(pet.data());
-                console.log('====================================');
                 pets.push({
                     name: pet.data().name,
                     age: pet.data().age,
@@ -61,16 +55,8 @@ const Home = ({ navigation }: RouterProps) => {
                     uid: pet.data().uid,
                     image: pet.data().image
                 })
-                setLoading(false)
-
-                // TODO: GUARDAR PETS EN PET STORE
-                /*                 console.log('====================================');
-                                console.log('USE EFFECT DATA');
-                                console.log(pets);
-                                console.log('===================================='); */
-                //setPets(pets)
             }
-
+            setLoading(false)
         };
         setLoading(true)
         fetchPetData();

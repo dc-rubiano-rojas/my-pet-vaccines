@@ -28,9 +28,9 @@ const Login = ({ navigation }: any) => {
 
     const savePetsInfo = async (petsId: any) => {
         for (const petId of petsId) {
-            const pet: any = await getPetService(petId) || []
-            // Note: add pet to store
-            addPet({
+/*             const pet: any = await getPetService(petId) || []
+ */            // Note: add pet to store
+/*             addPet({
                 name: pet.data().name,
                 age: pet.data().age,
                 gender: pet.data().gender,
@@ -39,7 +39,7 @@ const Login = ({ navigation }: any) => {
                 color: pet.data().color,
                 uid: pet.data().uid,
                 image: pet.data().image
-            })
+            }) */
         }
     }
 
@@ -129,14 +129,17 @@ const Login = ({ navigation }: any) => {
 
             <View style={styles.loginContainer}>
                 <Text style={styles.loginText}>Login</Text>
+                
                 <TextInput style={styles.input} placeholder='Email' autoCapitalize='none' onChangeText={(text) => setEmail(text)} />
                 {errors.email ? (
                     <Text style={styles.errorText}>{errors.email}</Text>
                 ) : null}
+
                 <TextInput secureTextEntry={true} style={styles.input} placeholder='Password' autoCapitalize='none' onChangeText={(text) => setPassword(text)} />
                 {errors.password ? (
                     <Text style={styles.errorText}>{errors.password}</Text>
                 ) : null}
+                
                 {loading ? <ActivityIndicator size='large' color='#0000ff' /> :
                     <>
                         <View style={styles.containerButtons}>
