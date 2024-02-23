@@ -54,6 +54,66 @@ const styles = StyleSheet.create({
     fontFamily: FONT.regular,
     color: "#B3AEC6",
   },
+  page: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: COLORS.gray,
+    borderRadius: 45,
+
+    paddingHorizontal: 15,
+    marginHorizontal: 24,
+
+    marginVertical: 20,
+    paddingBottom: 20,
+    width: '87.5%'
+  },
+  pageTitle: {
+    flexDirection: "row",
+    paddingTop: 20,
+    justifyContent: "center",
+  },
+  imageContainer: {
+    width: 312,
+    height: 280,
+    borderBottomLeftRadius: 75,
+    borderTopRightRadius: 75,
+    marginTop: 5
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderBottomLeftRadius: 75,
+    borderTopRightRadius: 75,
+  },
+  petInfoContainer: {
+    flex: 1,
+    flexDirection: "column",
+    paddingTop: 20,
+  },
+  dogInfoContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+  dogInfoText: {
+    fontSize: SIZES.small,
+    paddingRight: 8,
+    flexBasis: "33.33%",
+    paddingVertical: 3,
+  },
+  dogInfoTextBold: {
+    fontWeight: "800",
+  },
+  textTitle: {
+    fontSize: SIZES.xxLarge,
+    paddingHorizontal: 20,
+  },
+  pagerView: {
+    flex: 1,
+    marginHorizontal: 20,
+    marginVertical: 20,
+  },
 });
 
 export default styles;

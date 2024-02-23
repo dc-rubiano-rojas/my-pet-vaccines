@@ -7,7 +7,7 @@ type PetState = {
 
 type PetAction = {
   addPet: (pet: Pet) => void;
-  reducePet: (pet: Pet) => void;
+  reducePets: () => void;
 };
 
 // Create your store, which includes both state and (optionally) actions
@@ -26,14 +26,14 @@ const usePetStore = create<PetState & PetAction>((set) => ({
           breed: pet.breed,
           color: pet.color,
           uid: pet.uid,
-          image: pet.image
+          image: pet.image,
         },
       ],
     })),
-  reducePet: (pet: Pet) =>
+  reducePets: () =>
     set((state) => {
       return {
-        pets: state.pets.filter((p) => p.pid !== pet.pid),
+        pets: [],
       };
     }),
 }));

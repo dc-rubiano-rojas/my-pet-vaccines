@@ -43,8 +43,8 @@ const Profile = () => {
       console.log('====================================');
       console.log('HANDLE LOGOUT');
       console.log('====================================');
-      await logoutService()
       deleteUser()
+      await logoutService()
     } catch (error) {
       console.log('====================================');
       console.log('ERROR LOGOUT');

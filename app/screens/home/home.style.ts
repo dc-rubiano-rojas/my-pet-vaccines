@@ -34,18 +34,23 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   viewWithoutPets: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
     backgroundColor: COLORS.gray,
-    borderRadius:50,
+    borderRadius: 50,
     width: 60,
     height: 60,
     paddingLeft: 3,
-    marginTop: 20
+    marginTop: 20,
   },
-  textViewWithoutPets: {
-    
+  textViewWithoutPets: {},
+  headerContainer: {
+    backgroundColor: COLORS.secondary,
+    justifyContent: "center",
+    alignItems: "center",
+    flexBasis: "15%",
+    borderBottomLeftRadius: 75,
   },
   page: {
     flex: 1,
@@ -93,6 +98,11 @@ const styles = StyleSheet.create({
   dogInfoTextBold: {
     fontWeight: "800",
   },
+  flatListContainer: {
+    flex: 1,
+    flexDirection: "column",    
+  },
+  scrollViewContainer: {},
 });
 
 export default styles;

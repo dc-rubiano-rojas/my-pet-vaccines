@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, SafeAreaView } from 'react-native';
+import { ActivityIndicator, SafeAreaView, RefreshControl, ScrollView, FlatList } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { View, Text, Colors, TouchableOpacity, Image } from 'react-native-ui-lib';
 import PagerView from 'react-native-pager-view';
@@ -15,6 +15,7 @@ import CustomButton from '../../components/common/buttons/CustomButton';
 import { getPetService } from '../../services/api/pet-service';
 import useUserStore from '../../services/state/zustand/user-store';
 import usePetStore from '../../services/state/zustand/pet-store';
+import PetCard from '../../components/my-pet/PetCard';
 
 interface RouterProps {
     navigation: NavigationProp<any, any>;
@@ -26,6 +27,9 @@ const handleButton = async () => {
 
 const Home = ({ navigation }: RouterProps) => {
     const [loading, setLoading] = useState(false)
+    const [refreshing, setRefreshing] = useState(false)
+    const [showAddRegister, setShowAddRegister] = useState(false)
+
     const onPress = () => navigation.navigate('Pet Register')
 
     const {
@@ -38,35 +42,53 @@ const Home = ({ navigation }: RouterProps) => {
         petsId } = useUserStore()
 
     const {
-        pets
+        pets,
+        addPet: addPetStore,
+        reducePets: reducePetsStore
     } = usePetStore()
 
     useEffect(() => {
-        const fetchPetData = async () => {
-            for (const petId of petsId) {
-                const pet: any = await getPetService(petId) || []
-                pets.push({
-                    name: pet.data().name,
-                    age: pet.data().age,
-                    gender: pet.data().gender,
-                    weight: pet.data().weight,
-                    breed: pet.data().breed,
-                    color: pet.data().color,
-                    uid: pet.data().uid,
-                    image: pet.data().image
-                })
-            }
-            setLoading(false)
-        };
-        setLoading(true)
-        fetchPetData();
+        console.log('====================================');
+        console.log('pets');
+        console.log(pets);
+        console.log('====================================');
     }, [])
 
+    const onRefresh = async () => {
+        console.log('====================================');
+        console.log('onRefresh');
+        console.log('====================================');
+        setRefreshing(true);
+        reducePetsStore()
+        for await (const petId of petsId) {
+            const pet: any = await getPetService(petId) || []
+            addPetStore({
+                name: pet.data().name || '',
+                age: pet.data().age || '',
+                gender: pet.data().gender || '',
+                weight: pet.data().weight || '',
+                breed: pet.data().breed || '',
+                color: pet.data().color || '',
+                uid: pet.data().uid || '',
+                image: pet.data().image || ''
+            })
+        }
+
+        setRefreshing(false);
+
+    }
+
     const renderPager = () => {
+        console.log('====================================');
+        console.log('pets');
+        console.log(pets);
+        console.log('pets.length > 0');
+        console.log(pets.length > 0);
+        console.log('====================================');
         return (
             <PagerView style={styles.pagerView} initialPage={0}>
                 {
-                    pets.map((pet, index) =>
+                    pets.map((pet, index) => (
                         <View key={index} style={styles.page} >
                             <View style={styles.pageTitle}>
                                 <FontAwesome6 name='bone' color={COLORS.primary} size={40} />
@@ -98,27 +120,62 @@ const Home = ({ navigation }: RouterProps) => {
                                 />
                             </View>
                         </View>
-                    )
+                    ))
                 }
             </PagerView>
         )
     }
 
+    const navigatePetEdit = () => navigation.navigate('PetEdit')
+
+    const renderFlatList = () => {
+        return (
+            <FlatList
+                data={pets}
+                renderItem={({ item, index }: any) => <PetCard 
+                    pet={item}
+                    index={index}
+                    loading={!pets ? true : false}
+                    navigatePetEdit={navigatePetEdit} />}
+                horizontal={true}
+                showsHorizontalScrollIndicator={true}
+                alwaysBounceHorizontal={false}
+                pagingEnabled={true}
+                style={styles.flatListContainer}
+            />
+        )
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
+
             <View style={styles.container}>
 
                 <ScreenHeader title={'Home'} />
 
-                {loading ? <ActivityIndicator size='large' color='#0000ff' /> :
-                    <>
-                        <TouchableOpacity style={styles.viewWithoutPets} onPress={() => navigation.navigate('Pet Register')}>
-                            <Ionicons name='add-circle-outline' color={COLORS.primary} size={40} style={styles.textViewWithoutPets} />
-                        </TouchableOpacity>
+                <ScrollView refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }>
 
-                        {pets.length > 0 && renderPager()}
-                    </>
-                }
+                    {loading ? <ActivityIndicator size='large' color='#0000ff' /> :
+                        <>
+                            {showAddRegister && (
+                                <TouchableOpacity style={styles.viewWithoutPets} onPress={() => navigation.navigate('Pet Register')}>
+                                    <Ionicons name='add-circle-outline' color={COLORS.primary} size={40} style={styles.textViewWithoutPets} />
+                                </TouchableOpacity>
+                            )}
+
+                            <View style={styles.flatListContainer}>
+
+                                {pets.length > 0 && renderFlatList()}
+                            </View>
+                        </>
+                    }
+                </ScrollView>
+
 
 
             </View >

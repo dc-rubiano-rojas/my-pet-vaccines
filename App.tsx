@@ -25,6 +25,9 @@ import Register from './app/screens/login/Register';
 import PetEditModal from './app/screens/modals/pet-edit/PetEditModal';
 import { getUser } from './app/services/api/user-service';
 import useUserStore from './app/services/state/zustand/user-store';
+import { getPetService } from './app/services/api/pet-service';
+import usePetStore from './app/services/state/zustand/pet-store';
+import PetCard from './app/components/my-pet/PetCard';
 
 const Stack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
@@ -68,6 +71,7 @@ function InsideLayout() {
     <InsideStack.Navigator >
       <InsideStack.Screen name='Tabs' component={MyTabs} options={{ headerShown: false }} />
       <InsideStack.Screen name="Pet Profile" component={PetProfile} />
+      <InsideStack.Screen name="Pet Card" component={PetCard} />
       <InsideStack.Group screenOptions={{ presentation: 'modal' }}>
         <InsideStack.Screen name="PetEdit" component={PetEditModal} options={{ headerShown: false }} />
       </InsideStack.Group>
@@ -92,6 +96,26 @@ export default function App() {
 
   const [user, setUser] = useState<User | null>(null)
   const { updateUser } = useUserStore()
+  const { addPet: addPetStore } = usePetStore()
+
+  const savePetsInfoStore = async (petsId: any) => {
+    console.log('====================================');
+    console.log('savePetsInfo');
+    console.log('====================================');
+    for await (const petId of petsId) {
+      const pet: any = await getPetService(petId) || []
+      addPetStore({
+        name: pet.data().name || '',
+        age: pet.data().age || '',
+        gender: pet.data().gender || '',
+        weight: pet.data().weight || '',
+        breed: pet.data().breed || '',
+        color: pet.data().color || '',
+        uid: pet.data().uid || '',
+        image: pet.data().image || ''
+      })
+    }
+  }
 
 
   useEffect(() => {
@@ -106,7 +130,7 @@ export default function App() {
         console.log(userAuthState);
         console.log('====================================');
         console.log('====================================');
-        data?.docs.filter((doc) => {
+        data?.docs.filter(async (doc) => {
           if (doc.data().email === userAuthState.email) {
             // STORE
             updateUser({
@@ -117,7 +141,7 @@ export default function App() {
               contactNumber: doc.data().contactNumber,
               petsId: doc.data().petsId
             })
-
+            await savePetsInfoStore(doc.data().petsId)
             return doc
           }
         })
