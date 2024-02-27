@@ -39,7 +39,7 @@ export type UserToUpdate = {
 };
 
 export type Pet = {
-  pid?: "",
+  pid?: string,
   name: "";
   age: "";
   gender: "";

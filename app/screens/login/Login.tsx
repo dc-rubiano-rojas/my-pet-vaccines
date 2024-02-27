@@ -20,30 +20,11 @@ const Login = ({ navigation }: any) => {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState({ email: '', password: '' })
-    const { addPet:  addPetStore} = usePetStore()
-    const { uid,updateUser } = useUserStore()
+    const { addPet: addPetStore } = usePetStore()
+    const { uid, updateUser } = useUserStore()
 
     const auth = FIREBASE_AUTH
     const db = FIRESTORE_DB
-
-    const savePetsInfo = async (petsId: any) => {
-        console.log('====================================');
-        console.log('savePetsInfo');
-        console.log('====================================');
-        for await (const petId of petsId) {
-            const pet: any = await getPetService(petId) || []
-            addPetStore({
-                name: pet.data().name || '',
-                age: pet.data().age || '',
-                gender: pet.data().gender || '',
-                weight: pet.data().weight || '',
-                breed: pet.data().breed || '',
-                color: pet.data().color || '',
-                uid: pet.data().uid || '',
-                image: pet.data().image || ''
-            })
-        }
-    }
 
     const signIn = async () => {
         setLoading(true)
@@ -85,8 +66,7 @@ const Login = ({ navigation }: any) => {
                     contactNumber: doc.data().contactNumber,
                     petsId: doc.data().petsId
                 })
-/*                 await savePetsInfo(doc.data().petsId)
- */                return doc
+                return doc
             }
         })
 
@@ -131,7 +111,7 @@ const Login = ({ navigation }: any) => {
 
             <View style={styles.loginContainer}>
                 <Text style={styles.loginText}>Login</Text>
-                
+
                 <TextInput style={styles.input} placeholder='Email' autoCapitalize='none' onChangeText={(text) => setEmail(text)} />
                 {errors.email ? (
                     <Text style={styles.errorText}>{errors.email}</Text>
@@ -141,7 +121,7 @@ const Login = ({ navigation }: any) => {
                 {errors.password ? (
                     <Text style={styles.errorText}>{errors.password}</Text>
                 ) : null}
-                
+
                 {loading ? <ActivityIndicator size='large' color='#0000ff' /> :
                     <>
                         <View style={styles.containerButtons}>

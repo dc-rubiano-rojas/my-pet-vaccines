@@ -17,9 +17,11 @@ import useUserStore from '../../services/state/zustand/user-store';
 import { logoutService, updateUserService } from '../../services/api/user-service';
 import { ToastType } from '../../utils/types';
 import showToast from '../../utils/common-toasts';
+import usePetStore from '../../services/state/zustand/pet-store';
 
 const Profile = () => {
   const { name, email, contactNumber, lastname, uid, deleteUser } = useUserStore()
+  const { reducePets: reducePetsStore } = usePetStore()
   const [loading, setLoading] = useState(false)
 
   const editUser = async (data: any) => {
@@ -44,6 +46,7 @@ const Profile = () => {
       console.log('HANDLE LOGOUT');
       console.log('====================================');
       deleteUser()
+      reducePetsStore()
       await logoutService()
     } catch (error) {
       console.log('====================================');
@@ -102,7 +105,7 @@ const Profile = () => {
                   isValid
                 }): any => (
 
-                  
+
 
                   <>
                     <TextInput placeholder={'Name'}

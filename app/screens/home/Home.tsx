@@ -20,17 +20,11 @@ import PetCard from '../../components/my-pet/PetCard';
 interface RouterProps {
     navigation: NavigationProp<any, any>;
 }
-const handleButton = async () => {
-
-
-}
 
 const Home = ({ navigation }: RouterProps) => {
     const [loading, setLoading] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
     const [showAddRegister, setShowAddRegister] = useState(false)
-
-    const onPress = () => navigation.navigate('Pet Register')
 
     const {
         name,
@@ -62,7 +56,12 @@ const Home = ({ navigation }: RouterProps) => {
         reducePetsStore()
         for await (const petId of petsId) {
             const pet: any = await getPetService(petId) || []
+            console.log('====================================');
+            console.log('pet');
+            console.log( petId);
+            console.log('====================================');
             addPetStore({
+                pid: petId.toString(),
                 name: pet.data().name || '',
                 age: pet.data().age || '',
                 gender: pet.data().gender || '',
@@ -73,57 +72,7 @@ const Home = ({ navigation }: RouterProps) => {
                 image: pet.data().image || ''
             })
         }
-
         setRefreshing(false);
-
-    }
-
-    const renderPager = () => {
-        console.log('====================================');
-        console.log('pets');
-        console.log(pets);
-        console.log('pets.length > 0');
-        console.log(pets.length > 0);
-        console.log('====================================');
-        return (
-            <PagerView style={styles.pagerView} initialPage={0}>
-                {
-                    pets.map((pet, index) => (
-                        <View key={index} style={styles.page} >
-                            <View style={styles.pageTitle}>
-                                <FontAwesome6 name='bone' color={COLORS.primary} size={40} />
-                                <Text style={styles.textTitle}>{pet.name}</Text>
-                                <FontAwesome6 name='bone' color={COLORS.primary} size={40} />
-                            </View>
-                            <TouchableOpacity style={styles.imageContainer} onPress={() => navigation.navigate('PetEdit')}>
-                                <Image source={images.limon} style={styles.image}
-                                    resizeMode='cover'
-                                />
-                            </TouchableOpacity>
-                            <View style={styles.petInfoContainer}>
-                                <View style={styles.dogInfoContainer}>
-                                    <Text style={styles.dogInfoText}><Text style={styles.dogInfoTextBold}>Age: </Text>{pet.age} Years</Text>
-                                    <Text style={styles.dogInfoText}><Text style={styles.dogInfoTextBold}>Weight: </Text>{pet.weight} Kg</Text>
-                                    <Text style={styles.dogInfoText}><Text style={styles.dogInfoTextBold}>Color: </Text>{pet.color}</Text>
-                                    <Text style={styles.dogInfoText}><Text style={styles.dogInfoTextBold}>Gender: </Text>{pet.gender}</Text>
-                                    <Text style={styles.dogInfoText}><Text style={styles.dogInfoTextBold}>Breed: </Text>{pet.breed}</Text>
-                                    <Text style={styles.dogInfoText}><Text style={styles.dogInfoTextBold}>Height: </Text>20cm</Text>
-                                </View>
-
-                                <CustomButton
-                                    handleOnPress={handleButton}
-                                    title={'Edit'}
-                                />
-                                <CustomButton
-                                    handleOnPress={() => navigation.navigate('PetEdit')}
-                                    title={'Vaccines'}
-                                />
-                            </View>
-                        </View>
-                    ))
-                }
-            </PagerView>
-        )
     }
 
     const navigatePetEdit = () => navigation.navigate('PetEdit')
@@ -137,7 +86,7 @@ const Home = ({ navigation }: RouterProps) => {
                     index={index}
                     loading={!pets ? true : false}
                     navigatePetEdit={navigatePetEdit} />}
-                horizontal={true}
+                horizontal={false}
                 showsHorizontalScrollIndicator={true}
                 alwaysBounceHorizontal={false}
                 pagingEnabled={true}

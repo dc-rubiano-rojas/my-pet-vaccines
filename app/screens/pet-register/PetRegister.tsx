@@ -21,8 +21,9 @@ import { FIREBASE_STORAGE } from '../../../firebaseConfig';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import showToast from '../../utils/common-toasts';
 import { updateUserService } from '../../services/api/user-service';
+import { useRoute } from '@react-navigation/native';
 
-const PetRegister = ({ navigation }: any) => {
+const PetRegister = ({ navigation, route }: any) => {
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [initialValues, setInitialValues] = useState({
@@ -34,14 +35,32 @@ const PetRegister = ({ navigation }: any) => {
     color: '',
   })
   const [image, setImage] = useState('')
-  const { name, email, contactNumber, lastname, uid, petsId, updateUser: updateUserStore } = useUserStore()
+  const {
+    name,
+    email,
+    contactNumber,
+    lastname,
+    uid,
+    petsId,
+    updateUser: updateUserStore
+  } = useUserStore()
+  const {
+    addPet: addPetStore,
+    isAvaliableToEdit,
+    pets
+  } = usePetStore()
 
-  const { addPet: addPetStore } = usePetStore()
+  useEffect(() => {
+    console.log('====================================');
+    //const route = useRoute();
+    console.log('navigation');
+    console.log(route);
+    console.log('====================================');
+    
+/*     setInitialValues({
 
-/*   useEffect(() => {
-    setImage("")
-
-  },[]) */
+    }) */
+  }, [])
 
 
   const setUpload = async () => {
@@ -102,44 +121,63 @@ const PetRegister = ({ navigation }: any) => {
     }
   }
 
+  const petRegister = async () => {
+
+  }
+
   const handleButton = async (data: FormDataToRegisterAPet | any, { resetForm }: any) => {
-    try {
-      setLoading(true)
+    if (route.name === 'Pet Register') {
+      console.log('====================================');
+      console.log('PRESS PET REGISTER');
+      console.log('===================================');
 
-      await uploadImage()
+      try {
+        setLoading(true)
 
-      data.image = image
-      const petId = await addPetService(data, uid)
-      //await updateUser()
-      data.pid = petId
+        await uploadImage()
 
-      // TODO: Update user
-      updateUserService({
-        name,
-        email,
-        contactNumber,
-        lastname,
-        uid,
-        petsId: [...petsId, data.pid],
-      })
+        data.image = image
+        const petId = await addPetService(data, uid)
+        //await updateUser()
+        data.pid = petId
 
-      // FIXME: ADD PET TO STATE
-      addPetStore(data as Pet)
-      //pid.push(petId)
-      updateUserStore({
-        uid,
-        name,
-        lastname,
-        email,
-        contactNumber,
-        petsId: [...petsId, data.pid],
-      })
-    } catch (error: any) {
-      setLoading(false)
-      showToast(ToastType.error, 'There is an error', 'Contact client service!')
-    } finally {
-      resetForm()
+        // TODO: Update user
+        updateUserService({
+          name,
+          email,
+          contactNumber,
+          lastname,
+          uid,
+          petsId: [...petsId, data.pid],
+        })
+
+        // FIXME: ADD PET TO STATE
+        addPetStore(data as Pet)
+        //pid.push(petId)
+        updateUserStore({
+          uid,
+          name,
+          lastname,
+          email,
+          contactNumber,
+          petsId: [...petsId, data.pid],
+        })
+      } catch (error: any) {
+        setLoading(false)
+        showToast(ToastType.error, 'There is an error', 'Contact client service!')
+      } finally {
+        resetForm()
+      }
+      return
     }
+
+    if (route.name === 'Pet Edit') {
+      console.log('====================================');
+      console.log('PRESS PET EDIT');
+      console.log('====================================');
+
+    }
+
   }
 
   const ResgisterPetSchema = Yup.object().shape({
@@ -154,8 +192,7 @@ const PetRegister = ({ navigation }: any) => {
 
       <View style={styles.container}>
 
-        <ScreenHeader title={'Pet Register'} />
-
+        <ScreenHeader title={route.name || 'Pet Register'} />
 
         <TouchableOpacity
           style={styles.loginText}
@@ -167,8 +204,6 @@ const PetRegister = ({ navigation }: any) => {
             resizeMode: 'contain',
             borderRadius: 10
           }} /> : <Entypo name='upload-to-cloud' color={COLORS.primary} size={80} />}
-
-
         </TouchableOpacity>
 
         <View style={styles.formProfileContainer}>
@@ -229,7 +264,7 @@ const PetRegister = ({ navigation }: any) => {
                     <>
                       <CustomButton
                         handleOnPress={handleSubmit}
-                        title={'Create'}
+                        title={route.name === 'Pet Register' ? 'Create' : 'Edit'}
                       />
                     </>
                   }

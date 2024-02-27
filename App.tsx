@@ -22,7 +22,7 @@ import PetRegister from './app/screens/pet-register/PetRegister';
 import Profile from './app/screens/profile/UserProfile';
 import PetProfile from './app/screens/pet-profile/PetProfile';
 import Register from './app/screens/login/Register';
-import PetEditModal from './app/screens/modals/pet-edit/PetEditModal';
+import ShowVaccineModal from './app/screens/modals/pet-edit/ShowVaccineModal';
 import { getUser } from './app/services/api/user-service';
 import useUserStore from './app/services/state/zustand/user-store';
 import { getPetService } from './app/services/api/pet-service';
@@ -70,10 +70,9 @@ function InsideLayout() {
   return (
     <InsideStack.Navigator >
       <InsideStack.Screen name='Tabs' component={MyTabs} options={{ headerShown: false }} />
-      <InsideStack.Screen name="Pet Profile" component={PetProfile} />
-      <InsideStack.Screen name="Pet Card" component={PetCard} />
       <InsideStack.Group screenOptions={{ presentation: 'modal' }}>
-        <InsideStack.Screen name="PetEdit" component={PetEditModal} options={{ headerShown: false }} />
+        <InsideStack.Screen name="Pet Edit" component={PetRegister} options={{ headerShown: false }} />
+        <InsideStack.Screen name="Vaccines" component={ShowVaccineModal} options={{ headerShown: false }} />
       </InsideStack.Group>
     </InsideStack.Navigator>
   )
@@ -105,6 +104,7 @@ export default function App() {
     for await (const petId of petsId) {
       const pet: any = await getPetService(petId) || []
       addPetStore({
+        pid: petId.toString(),
         name: pet.data().name || '',
         age: pet.data().age || '',
         gender: pet.data().gender || '',
@@ -121,7 +121,6 @@ export default function App() {
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, async (userAuthState: any) => {
 
-      // FIXME: CUANDO FALLE GETUSER TRY CATCH
       try {
         const data = await getUser(userAuthState?.email)
         console.log('====================================');

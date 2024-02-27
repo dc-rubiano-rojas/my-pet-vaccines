@@ -100,7 +100,9 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     flex: 1,
-    flexDirection: "column",    
+    flexDirection: "column",  
+    
+
   },
   scrollViewContainer: {},
 });

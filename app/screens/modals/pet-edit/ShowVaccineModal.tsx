@@ -2,9 +2,9 @@ import { View, Text, Button, SafeAreaView } from 'react-native'
 
 import React from 'react'
 import { ScreenHeader } from '../../../components'
-import styles from './pet-edit-motal.style'
+import styles from './show-vaccine-modal'
 
-const PetEditModal = ({ navigation }: any) => {
+const ShowVaccineModal = ({ navigation }: any) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
@@ -17,4 +17,4 @@ const PetEditModal = ({ navigation }: any) => {
     )
 }
 
-export default PetEditModal
+export default ShowVaccineModal
