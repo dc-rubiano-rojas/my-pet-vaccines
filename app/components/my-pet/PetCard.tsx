@@ -22,18 +22,17 @@ const PetCard = ({ pet, index, loading }: any) => {
     const navigation = useNavigation();
     const {
         addPet: addPetStore,
-        updateIsAvaliableToEdit,
-        updatePetIdToEdit
+        addPetToEdit,
     } = usePetStore()
 
 
-    const handleButton = async () => {
+    const handleEditButton = async () => {
         console.log('====================================');
-        console.log('click navigate');
+        console.log('click EditButton');
         console.log('====================================');
-        //updatePetIdToEdit(pet.pid)
-        navigation.setOptions({ pet } as any)
-        navigation.setParams({ pet } as any)
+        addPetToEdit(pet)
+        //navigation.setOptions({ pet } as any)
+        //navigation.setParams(pet)
         navigation.navigate('Pet Edit' as never)
     }
     /*     console.log('====================================');
@@ -45,7 +44,7 @@ const PetCard = ({ pet, index, loading }: any) => {
         console.log('====================================');
         console.log('PET CARD USEEFFECT');
         console.log('====================================');
-        
+
     }, [])
 
     return (
@@ -82,7 +81,7 @@ const PetCard = ({ pet, index, loading }: any) => {
                         </View>
 
                         <CustomButton
-                            handleOnPress={() => handleButton()}
+                            handleOnPress={() => handleEditButton()}
                             title={'Edit'}
                         />
                         <CustomButton

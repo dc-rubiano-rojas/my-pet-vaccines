@@ -1,32 +1,69 @@
 import { create } from "zustand";
 import { Pet } from "../../../utils/types";
 
+type PetToEditState = {
+  pid?: string;
+  name: string;
+  age: string;
+  gender: string;
+  weight: string;
+  breed: string;
+  color: string;
+  uid: string[];
+  image: string;
+};
+
 type PetState = {
   pets: Array<Pet>;
-  isAvaliableToEdit: boolean;
-  petIdToEdit: string;
 };
 
 type PetAction = {
   addPet: (pet: Pet) => void;
   reducePets: () => void;
-  updateIsAvaliableToEdit: (newState: boolean) => void;
-  updatePetIdToEdit: (id: string) => void;
+  addPetToEdit: (pet: Pet) => void;
+  deletePetToEdit: () => void;
 };
 
 // Create your store, which includes both state and (optionally) actions
-const usePetStore = create<PetState & PetAction>((set) => ({
+const usePetStore = create<PetState & PetAction & PetToEditState>((set) => ({
   pets: [],
-  isAvaliableToEdit: false,
-  petIdToEdit: "",
-  updatePetIdToEdit: (id: string) =>
+
+  pid: "",
+  name: "",
+  age: "",
+  gender: "",
+  weight: "",
+  breed: "",
+  color: "",
+  uid: [""],
+  image: "",
+
+  addPetToEdit: (pet: Pet) =>
     set((state) => ({
-      petIdToEdit: id
+      pid: pet.pid,
+      name: pet.name,
+      age: pet.age,
+      gender: pet.gender,
+      weight: pet.weight,
+      breed: pet.breed,
+      color: pet.color,
+      uid: pet.uid,
+      image: pet.image,
     })),
-  updateIsAvaliableToEdit: (newState: boolean) =>
+
+  deletePetToEdit: () =>
     set((state) => ({
-      isAvaliableToEdit: newState
+      pid: "",
+      name: "",
+      age: "",
+      gender: "",
+      weight: "",
+      breed: "",
+      color: "",
+      uid: [],
+      image: "",
     })),
+
   addPet: (pet: Pet) =>
     set((state) => ({
       pets: [
@@ -44,6 +81,7 @@ const usePetStore = create<PetState & PetAction>((set) => ({
         },
       ],
     })),
+    
   reducePets: () =>
     set((state) => {
       return {

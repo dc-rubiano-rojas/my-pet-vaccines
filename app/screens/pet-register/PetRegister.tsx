@@ -1,11 +1,8 @@
 import { View, Text, SafeAreaView, TextInput, ActivityIndicator, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-
 import Entypo from 'react-native-vector-icons/Entypo';
-
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
 import * as ImagePicker from 'expo-image-picker'
 
 import styles from './pet-register.style'
@@ -46,20 +43,38 @@ const PetRegister = ({ navigation, route }: any) => {
   } = useUserStore()
   const {
     addPet: addPetStore,
-    isAvaliableToEdit,
-    pets
+    name: petName,
+    age,
+    gender,
+    weight,
+    breed,
+    color,
+    image: petImage
   } = usePetStore()
 
   useEffect(() => {
     console.log('====================================');
     //const route = useRoute();
-    console.log('navigation');
-    console.log(route);
+    console.log('Pet Register component');
+    console.log({
+      name: petName,
+      age,
+      gender,
+      weight,
+      breed,
+      color,
+      image: petImage
+    });
     console.log('====================================');
-    
-/*     setInitialValues({
 
-    }) */
+    /*     setInitialValues({
+          name: petName ? petName : '',
+          age: age ? age : '',
+          gender: '',
+          weight: '',
+          breed: '',
+          color: '',
+        }) */
   }, [])
 
 
@@ -210,12 +225,12 @@ const PetRegister = ({ navigation, route }: any) => {
           <View style={styles.inputsContainer}>
             <Formik
               initialValues={{
-                name: '',
-                age: '',
-                gender: '',
-                weight: '',
-                breed: '',
-                color: '',
+                name: petName ? petName : '',
+                age: age ? age : '',
+                gender: gender ? gender : '',
+                weight: weight ? weight : '',
+                breed: breed ? breed : '',
+                color: color ? color : '',
               }}
               validationSchema={ResgisterPetSchema}
               onSubmit={handleButton}

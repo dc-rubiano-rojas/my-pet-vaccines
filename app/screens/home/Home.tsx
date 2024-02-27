@@ -38,7 +38,8 @@ const Home = ({ navigation }: RouterProps) => {
     const {
         pets,
         addPet: addPetStore,
-        reducePets: reducePetsStore
+        reducePets: reducePetsStore,
+        deletePetToEdit
     } = usePetStore()
 
     useEffect(() => {
@@ -47,6 +48,20 @@ const Home = ({ navigation }: RouterProps) => {
         console.log(pets);
         console.log('====================================');
     }, [])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+          // opened
+          console.log('====================================');
+          console.log('CLOSE MODAL');
+          console.log('====================================');
+          deletePetToEdit()
+        });
+        return () => {
+          // closed
+          unsubscribe()
+        };
+      }, [navigation]);
 
     const onRefresh = async () => {
         console.log('====================================');

@@ -123,12 +123,6 @@ export default function App() {
 
       try {
         const data = await getUser(userAuthState?.email)
-        console.log('====================================');
-        console.log('onAuthStateChanged');
-        console.log('====================================');
-        console.log(userAuthState);
-        console.log('====================================');
-        console.log('====================================');
         data?.docs.filter(async (doc) => {
           if (doc.data().email === userAuthState.email) {
             // STORE
