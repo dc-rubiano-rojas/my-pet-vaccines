@@ -47,7 +47,9 @@ const Home = ({ navigation }: RouterProps) => {
         console.log('pets');
         console.log(pets);
         console.log('====================================');
-    }, [])
+        if(pets.length <= 0) setShowAddRegister(true)
+        if(pets.length > 0) setShowAddRegister(false)
+    }, [pets])
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {

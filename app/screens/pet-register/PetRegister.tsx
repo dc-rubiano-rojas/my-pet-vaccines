@@ -78,7 +78,7 @@ const PetRegister = ({ navigation, route }: any) => {
   }, [])
 
 
-  const setUpload = async () => {
+  const handleUploadImage = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -93,7 +93,8 @@ const PetRegister = ({ navigation, route }: any) => {
       setImage(result.assets[0].uri)
     }
   }
-  const uploadImage = async (fileType = 'image') => {
+
+  const uploadImage = async (fileType = 'image', data: FormDataToRegisterAPet | any) => {
     try {
       const response = await fetch(image)
       const blob = await response.blob()
@@ -119,12 +120,8 @@ const PetRegister = ({ navigation, route }: any) => {
         () => {
           // Finally
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            console.log('====================================');
-            console.log('downloadUrl');
-            console.log(downloadURL);
-            console.log('====================================');
-            setImage("")
-            //setImage(downloadUrl)
+            setImage(downloadURL)
+            petRegister(data)
           })
         }
       )
@@ -136,11 +133,36 @@ const PetRegister = ({ navigation, route }: any) => {
     }
   }
 
-  const petRegister = async () => {
+  const petRegister = async (data: FormDataToRegisterAPet | any) => {
+    data.image = image
+    const petId = await addPetService(data, uid)
+    //await updateUser()
+    data.pid = petId
 
+    // TODO: Update user
+    updateUserService({
+      name,
+      email,
+      contactNumber,
+      lastname,
+      uid,
+      petsId: [...petsId, data.pid],
+    })
+
+    // FIXME: ADD PET TO STATE
+    addPetStore(data as Pet)
+    //pid.push(petId)
+    updateUserStore({
+      uid,
+      name,
+      lastname,
+      email,
+      contactNumber,
+      petsId: [...petsId, data.pid],
+    })
   }
 
-  const handleButton = async (data: FormDataToRegisterAPet | any, { resetForm }: any) => {
+  const handleSubmitButton = async (data: FormDataToRegisterAPet | any, { resetForm }: any) => {
     if (route.name === 'Pet Register') {
       console.log('====================================');
       console.log('PRESS PET REGISTER');
@@ -149,39 +171,14 @@ const PetRegister = ({ navigation, route }: any) => {
       try {
         setLoading(true)
 
-        await uploadImage()
+        await uploadImage('image', data)
 
-        data.image = image
-        const petId = await addPetService(data, uid)
-        //await updateUser()
-        data.pid = petId
-
-        // TODO: Update user
-        updateUserService({
-          name,
-          email,
-          contactNumber,
-          lastname,
-          uid,
-          petsId: [...petsId, data.pid],
-        })
-
-        // FIXME: ADD PET TO STATE
-        addPetStore(data as Pet)
-        //pid.push(petId)
-        updateUserStore({
-          uid,
-          name,
-          lastname,
-          email,
-          contactNumber,
-          petsId: [...petsId, data.pid],
-        })
       } catch (error: any) {
         setLoading(false)
         showToast(ToastType.error, 'There is an error', 'Contact client service!')
       } finally {
         resetForm()
+        //setImage('')
       }
       return
     }
@@ -190,7 +187,12 @@ const PetRegister = ({ navigation, route }: any) => {
       console.log('====================================');
       console.log('PRESS PET EDIT');
       console.log('====================================');
+      try {
 
+      } catch (error) {
+        setLoading(false)
+        showToast(ToastType.error, 'There is an error', 'Contact client service!')
+      }
     }
 
   }
@@ -211,7 +213,7 @@ const PetRegister = ({ navigation, route }: any) => {
 
         <TouchableOpacity
           style={styles.loginText}
-          onPress={() => setUpload()}
+          onPress={() => handleUploadImage()}
         >
           {image ? <Image source={{ uri: image }} style={{
             width: 100,
@@ -233,7 +235,7 @@ const PetRegister = ({ navigation, route }: any) => {
                 color: color ? color : '',
               }}
               validationSchema={ResgisterPetSchema}
-              onSubmit={handleButton}
+              onSubmit={handleSubmitButton}
             >
               {({
                 values,

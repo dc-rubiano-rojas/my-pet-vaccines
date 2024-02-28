@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 
 import { FIRESTORE_DB } from "../../../firebaseConfig";
@@ -16,10 +16,10 @@ export async function saveImagePetService(pet: Pet, uid: string) {
 
 export async function getPetService(pid: string) {
     try {
-        
+
         const ref = doc(FIRESTORE_DB, `pets/${pid}`)
         const data = await getDoc(ref);
-    
+
         return data
     } catch (error) {
         console.log('====================================');
@@ -31,8 +31,17 @@ export async function getPetService(pid: string) {
 export function getPet(id: string) {
 
 }
-export function updatePet(id: string) {
-
+export async function updatePet(pet: Pet) {
+    try {
+        const ref = doc(FIRESTORE_DB, `pets/${pet.pid}`)
+        delete pet.pid
+        await updateDoc(ref, { ...pet })
+    } catch (error) {
+        console.log('====================================');
+        console.log('error - getPetService');
+        console.log(error);
+        console.log('====================================');
+    }
 }
 export function deletePet(id: string) {
 
