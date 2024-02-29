@@ -16,6 +16,7 @@ import { getPetService } from '../../services/api/pet-service';
 import useUserStore from '../../services/state/zustand/user-store';
 import usePetStore from '../../services/state/zustand/pet-store';
 import PetCard from '../../components/my-pet/PetCard';
+import { onSnapshot } from 'firebase/firestore';
 
 interface RouterProps {
     navigation: NavigationProp<any, any>;
@@ -49,6 +50,9 @@ const Home = ({ navigation }: RouterProps) => {
         console.log('====================================');
         if(pets.length <= 0) setShowAddRegister(true)
         if(pets.length > 0) setShowAddRegister(false)
+
+        //const unsuscribe = onSnapshot(collection())
+
     }, [pets])
 
     useEffect(() => {

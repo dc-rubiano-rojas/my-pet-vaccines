@@ -31,7 +31,6 @@ const PetRegister = ({ navigation, route }: any) => {
     breed: '',
     color: '',
   })
-  const [image, setImage] = useState('')
   const {
     name,
     email,
@@ -51,6 +50,7 @@ const PetRegister = ({ navigation, route }: any) => {
     color,
     image: petImage
   } = usePetStore()
+  const [image, setImage] = useState(petImage ? petImage: '')
 
   useEffect(() => {
     console.log('====================================');
@@ -66,17 +66,11 @@ const PetRegister = ({ navigation, route }: any) => {
       image: petImage
     });
     console.log('====================================');
-
-    /*     setInitialValues({
-          name: petName ? petName : '',
-          age: age ? age : '',
-          gender: '',
-          weight: '',
-          breed: '',
-          color: '',
-        }) */
+    console.log(petImage ? petImage: image);
+    console.log('====================================');
+    console.log('====================================');
   }, [])
-
+  
 
   const handleUploadImage = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({
@@ -121,7 +115,7 @@ const PetRegister = ({ navigation, route }: any) => {
           // Finally
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             setImage(downloadURL)
-            petRegister(data)
+            await petRegister(data, downloadURL)
           })
         }
       )
@@ -133,8 +127,8 @@ const PetRegister = ({ navigation, route }: any) => {
     }
   }
 
-  const petRegister = async (data: FormDataToRegisterAPet | any) => {
-    data.image = image
+  const petRegister = async (data: FormDataToRegisterAPet | any, downloadURL: any) => {
+    data.image = downloadURL
     const petId = await addPetService(data, uid)
     //await updateUser()
     data.pid = petId

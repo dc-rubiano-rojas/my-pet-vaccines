@@ -44,7 +44,10 @@ const PetCard = ({ pet, index, loading }: any) => {
         console.log('====================================');
         console.log('PET CARD USEEFFECT');
         console.log('====================================');
-
+        console.log('====================================');
+        console.log('pet');
+        console.log(pet.image);
+        console.log('====================================');
     }, [])
 
     return (
@@ -60,7 +63,7 @@ const PetCard = ({ pet, index, loading }: any) => {
                     <TouchableOpacity
                         style={styles.imageContainer}
                         onPress={() => navigation.navigate('Vaccines' as never)}>
-                        <Image source={images.limon}
+                        <Image source={{ uri: pet.image }}
                             resizeMode='cover'
                             style={{
                                 height: '100%',

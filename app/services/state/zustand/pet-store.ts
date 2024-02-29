@@ -81,7 +81,7 @@ const usePetStore = create<PetState & PetAction & PetToEditState>((set) => ({
         },
       ],
     })),
-    
+
   reducePets: () =>
     set((state) => {
       return {
