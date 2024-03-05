@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import SkeletonContent from "react-native-skeleton-content";
 
 import CustomButton from '../common/buttons/CustomButton'
 import styles from './MyPet.style'
@@ -60,6 +61,16 @@ const PetCard = ({ pet, index, loading }: any) => {
                         <Text style={styles.textTitle}>{pet.name}</Text>
                         <FontAwesome6 name='bone' color={COLORS.primary} size={40} />
                     </View>
+
+                    {/*                     <SkeletonContent
+                        containerStyle={{
+                            flex: 1,
+                            marginTop: 20,
+                        }}
+                        isLoading={loading}
+                        duration={2000}
+                    > */}
+
                     <TouchableOpacity
                         style={styles.imageContainer}
                         onPress={() => navigation.navigate('Vaccines' as never)}>
@@ -73,6 +84,8 @@ const PetCard = ({ pet, index, loading }: any) => {
                             }}
                         />
                     </TouchableOpacity>
+                    {/*                     </SkeletonContent>
+ */}
                     <View style={styles.petInfoContainer}>
                         <View style={styles.dogInfoContainer}>
                             <Text style={styles.dogInfoText}><Text style={styles.dogInfoTextBold}>Age: </Text>{pet.age} Years</Text>

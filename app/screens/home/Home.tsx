@@ -45,7 +45,7 @@ const Home = ({ navigation }: RouterProps) => {
 
     useEffect(() => {
         console.log('====================================');
-        console.log('pets');
+        console.log('HOME useEffect pets');
         console.log(pets);
         console.log('====================================');
         if(pets.length <= 0) setShowAddRegister(true)

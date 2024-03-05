@@ -26,7 +26,7 @@ const Login = ({ navigation }: any) => {
     const auth = FIREBASE_AUTH
     const db = FIRESTORE_DB
 
-    const signIn = async () => {
+    const handleButtonSignIn = async () => {
         setLoading(true)
 
         try {
@@ -126,7 +126,7 @@ const Login = ({ navigation }: any) => {
                     <>
                         <View style={styles.containerButtons}>
                             <LoginButton
-                                handleOnPress={signIn}
+                                handleOnPress={handleButtonSignIn}
                                 title={'Sign In'}
                             />
                             <LoginButton

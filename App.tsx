@@ -100,6 +100,7 @@ export default function App() {
   const savePetsInfoStore = async (petsId: any) => {
     console.log('====================================');
     console.log('savePetsInfo');
+    console.log(petsId.length);
     console.log('====================================');
     for await (const petId of petsId) {
       const pet: any = await getPetService(petId) || []

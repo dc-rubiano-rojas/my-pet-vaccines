@@ -50,7 +50,7 @@ const PetRegister = ({ navigation, route }: any) => {
     color,
     image: petImage
   } = usePetStore()
-  const [image, setImage] = useState(petImage ? petImage: '')
+  const [image, setImage] = useState(petImage ? petImage : '')
 
   useEffect(() => {
     console.log('====================================');
@@ -66,11 +66,11 @@ const PetRegister = ({ navigation, route }: any) => {
       image: petImage
     });
     console.log('====================================');
-    console.log(petImage ? petImage: image);
+    console.log(petImage ? petImage : image);
     console.log('====================================');
     console.log('====================================');
   }, [])
-  
+
 
   const handleUploadImage = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({
@@ -215,6 +215,7 @@ const PetRegister = ({ navigation, route }: any) => {
             resizeMode: 'contain',
             borderRadius: 10
           }} /> : <Entypo name='upload-to-cloud' color={COLORS.primary} size={80} />}
+
         </TouchableOpacity>
 
         <View style={styles.formProfileContainer}>
@@ -284,8 +285,6 @@ const PetRegister = ({ navigation, route }: any) => {
             </Formik>
           </View>
         </View>
-
-
 
       </View>
     </SafeAreaView>
