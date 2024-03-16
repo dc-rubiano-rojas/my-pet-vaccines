@@ -31,7 +31,7 @@ export async function getPetService(pid: string) {
 export function getPet(id: string) {
 
 }
-export async function updatePet(pet: Pet) {
+export async function updatePetService(pet: Pet) {
     try {
         const ref = doc(FIRESTORE_DB, `pets/${pet.pid}`)
         delete pet.pid

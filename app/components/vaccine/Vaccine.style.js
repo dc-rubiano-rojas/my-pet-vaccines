@@ -22,7 +22,9 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primary,
     },
     datePicker: {
-        backgroundColor: COLORS.secondary
+        borderRadius: 10,
+        elevation: 4,
+        margin: 40
     },
     containerShowAll: {
 

@@ -11,7 +11,7 @@ import { ScreenHeader } from '../../components'
 import CustomButton from '../../components/common/buttons/CustomButton';
 import { FormDataToRegisterAPet, Pet, ToastType, UserToUpdate } from '../../utils/types';
 import useUserStore from '../../services/state/zustand/user-store';
-import { addPetService } from '../../services/api/pet-service';
+import { addPetService, updatePetService } from '../../services/api/pet-service';
 import usePetStore from '../../services/state/zustand/pet-store';
 
 import { FIREBASE_STORAGE } from '../../../firebaseConfig';
@@ -88,7 +88,49 @@ const PetRegister = ({ navigation, route }: any) => {
     }
   }
 
+
   const uploadImage = async (fileType = 'image', data: FormDataToRegisterAPet | any) => {
+    try {
+      const response = await fetch(image)
+      const blob = await response.blob()
+
+      const storageRef = ref(FIREBASE_STORAGE, 'Pets/' + new Date().getTime())
+      const uploadTask = uploadBytesResumable(storageRef, blob)
+      uploadTask.on('state_changed',
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes)
+          console.log('====================================');
+          console.log('progress');
+          console.log(progress);
+          console.log('====================================');
+          if (progress === 1) {
+            setImage('')
+            setLoading(false)
+            showToast(ToastType.success, 'Pet has been created', 'Succesfully!')
+            return
+          }
+        },
+        (error) => {
+          // Handle error
+        },
+        () => {
+          // Finally
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then(async (downloadURL) => {
+              await petRegister(data, downloadURL)
+            })
+        }
+      )
+
+    } catch (error: any) {
+      console.log('====================================');
+      console.log('uploadImage - ', error.message);
+      console.log('====================================');
+    }
+  }
+
+
+  const editPet = async (fileType = 'image', data: FormDataToRegisterAPet | any) => {
     try {
       const response = await fetch(image)
       const blob = await response.blob()
@@ -113,10 +155,15 @@ const PetRegister = ({ navigation, route }: any) => {
         },
         () => {
           // Finally
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            setImage(downloadURL)
-            await petRegister(data, downloadURL)
-          })
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then(async (downloadURL) => {
+              setImage(downloadURL)
+              //await petRegister(data, downloadURL)
+
+              // TODO: Add delete image from storage
+              // TODO: Add delete info from firestore
+              updatePetService(data as Pet);
+            })
         }
       )
 
@@ -129,11 +176,11 @@ const PetRegister = ({ navigation, route }: any) => {
 
   const petRegister = async (data: FormDataToRegisterAPet | any, downloadURL: any) => {
     data.image = downloadURL
+    // NOTE: Add Pet in Firestore
     const petId = await addPetService(data, uid)
-    //await updateUser()
     data.pid = petId
 
-    // TODO: Update user
+    // TODO: Update user in Firestore
     updateUserService({
       name,
       email,
@@ -143,7 +190,7 @@ const PetRegister = ({ navigation, route }: any) => {
       petsId: [...petsId, data.pid],
     })
 
-    // FIXME: ADD PET TO STATE
+    // FIXME: Add Pet and Update User in Store Managment
     addPetStore(data as Pet)
     //pid.push(petId)
     updateUserStore({
@@ -165,6 +212,7 @@ const PetRegister = ({ navigation, route }: any) => {
       try {
         setLoading(true)
 
+        // Note: sube la imagen y crea la data
         await uploadImage('image', data)
 
       } catch (error: any) {
@@ -181,7 +229,10 @@ const PetRegister = ({ navigation, route }: any) => {
       console.log('====================================');
       console.log('PRESS PET EDIT');
       console.log('====================================');
+
       try {
+        setLoading(true)
+        await editPet('image', data)
 
       } catch (error) {
         setLoading(false)

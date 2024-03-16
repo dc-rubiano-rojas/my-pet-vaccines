@@ -9,13 +9,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.gray,
   },
   addVaccineContainer: {
-    flexBasis: '30%',
+    flexBasis: '40%',
     backgroundColor: COLORS.gray,
     flex: 1,
     flexDirection: "column",
   },
   allVaccinesContainer: {
-    flexBasis: '70%',
+    flexBasis: '60%',
     flex: 1,
     flexDirection: "column",
     backgroundColor: COLORS.secondary,
