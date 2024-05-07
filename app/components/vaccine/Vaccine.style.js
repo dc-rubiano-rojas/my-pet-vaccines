@@ -4,9 +4,7 @@ import { COLORS, FONT, SHADOWS, SIZES } from "../../constants";
 
 const styles = StyleSheet.create({
     addVaccineContainer: {
-
         flexBasis: '30%',
-
     },
     container: {
         marginHorizontal: 70,
@@ -40,20 +38,18 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 40,
     },
     cardsContainer: {
+        flex: 1,
+        flexDirection: 'column',
         marginVertical: 30,
         marginHorizontal: 15,
+        backgroundColor: COLORS.secondary
     },
     flatListContainer: {
+        flex: '1',
+        flexDirection: "column",
     },
-    vaccineCardContainer: {
-        flex: 1,
-        flexDirection: "row",
-        backgroundColor: COLORS.lightWhite,
-        marginVertical: 6,
-        borderRadius: 8,
-    },
-    infoContainer: {},
-    imageContainer: {},
+
+
 });
 
 export default styles;

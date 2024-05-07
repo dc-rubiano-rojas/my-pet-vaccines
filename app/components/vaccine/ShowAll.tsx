@@ -13,13 +13,14 @@ import styles from './Vaccine.style';
 import { COLORS, SIZES } from '../../constants';
 import VaccineCard from './VaccineCard';
 import { startAt } from 'firebase/firestore';
+import { Vaccine, VaccineToRegister } from '../../utils/types';
 
 function ShowAll() {
-  const data = [
+  const data: Vaccine[] = [
     {
       id: '1',
       name: 'vaccine 1',
-      img: '',
+      img: 'https://firebasestorage.googleapis.com/v0/b/my-pet-vaccines.appspot.com/o/Pets%2F1710624175064?alt=media&token=e3935f4c-d7a3-4448-b6fa-13b3a66087a8',
       startAt: '2024-10-02',
       endAt: '2025-10-02'
     },
@@ -29,7 +30,7 @@ function ShowAll() {
       img: '',
       startAt: '2024-10-02',
       endAt: '2025-10-02'
-    },  
+    },
   ]
   const [isLoading, setLoading] = useState(false)
   return (
@@ -47,6 +48,7 @@ function ShowAll() {
           )}
           keyExtractor={item => item?.id}
           contentContainerStyle={{ columnGap: SIZES.medium }}
+          horizontal={false}
         />}
       </View>
     </SafeAreaView>

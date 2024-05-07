@@ -1,7 +1,5 @@
-
-
 export type FormDataToRegisterAPet = {
-  pid?: string
+  pid?: string;
   Age: string;
   Breed: string;
   Color: string;
@@ -27,7 +25,7 @@ export type UserToRegister = {
   lastname: "";
   email: "";
   contactNumber: "";
-  petsId: []
+  petsId: [];
 };
 
 export type UserToUpdate = {
@@ -36,11 +34,11 @@ export type UserToUpdate = {
   lastname: string;
   email: string;
   contactNumber: string;
-  petsId: string[]
+  petsId: string[];
 };
 
 export type Pet = {
-  pid?: string,
+  pid?: string;
   name: "";
   age: "";
   gender: "";
@@ -48,10 +46,10 @@ export type Pet = {
   breed: "";
   color: "";
   uid: [""];
-  image: ""
+  image: "";
 };
 export type PetDataToManage = {
-  pid?: "",
+  pid?: "";
   name: "";
   age: "";
   gender: "";
@@ -59,18 +57,26 @@ export type PetDataToManage = {
   breed: "";
   color: "";
   uid: [""];
-  image: ""
+  image: "";
 };
 
 export type VaccineToRegister = {
-  uid: any;
   name: string;
+  img: string;
+  startAt: string;
+  endAt: string;
+};
+
+export type Vaccine = {
+  id: string;
+  name: string;
+  img: string;
   startAt: string;
   endAt: string;
 };
 
 export enum ToastType {
-  success = 'success',
-  error = 'error',
-  info = 'info'
+  success = "success",
+  error = "error",
+  info = "info",
 }
