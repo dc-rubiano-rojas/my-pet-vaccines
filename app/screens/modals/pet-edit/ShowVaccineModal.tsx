@@ -10,23 +10,18 @@ import AddVaccine from '../../../components/vaccine/AddVaccine';
 import ShowAll from '../../../components/vaccine/ShowAll';
 
 const ShowVaccineModal = ({ navigation }: any) => {
+    console.log('====================================');
+    console.log('SHOW VACCINE MODAL');
+    console.log('====================================');
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
                 <ScreenHeader title={'Vaccines'} />
 
                 <View style={styles.container}>
-                    <View style={styles.addVaccineContainer}>
-                        <AddVaccine />
-                    </View>
-                    <ScrollView style={styles.allVaccinesContainer}>
-                        <ShowAll />
-                    </ScrollView>
+                    <AddVaccine />
+                    <ShowAll />
                 </View>
-
-                <TouchableOpacity style={styles.viewWithoutPets} onPress={() => navigation.goBack()}>
-                    <Ionicons name='close' color={COLORS.primary} size={40} style={styles.textViewWithoutPets} />
-                </TouchableOpacity>
             </View>
         </SafeAreaView>
 

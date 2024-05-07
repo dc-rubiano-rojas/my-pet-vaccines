@@ -29,6 +29,7 @@ export type UserToRegister = {
   contactNumber: "";
   petsId: []
 };
+
 export type UserToUpdate = {
   uid: any;
   name: string;
@@ -59,6 +60,13 @@ export type PetDataToManage = {
   color: "";
   uid: [""];
   image: ""
+};
+
+export type VaccineToRegister = {
+  uid: any;
+  name: string;
+  startAt: string;
+  endAt: string;
 };
 
 export enum ToastType {

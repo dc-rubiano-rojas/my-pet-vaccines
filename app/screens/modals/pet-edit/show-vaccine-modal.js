@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { COLORS, FONT, SIZES } from "../../../constants";
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -18,7 +17,7 @@ const styles = StyleSheet.create({
     flexBasis: '60%',
     flex: 1,
     flexDirection: "column",
-    backgroundColor: COLORS.secondary,
+    backgroundColor: COLORS.gray,
     borderTopStartRadius: 75,
   },
   textViewWithoutPets: {},
@@ -33,9 +32,7 @@ const styles = StyleSheet.create({
     paddingLeft: 3,
     marginTop: 15,
     marginBottom: 15,
-    
   },
-  
 });
 
 export default styles;

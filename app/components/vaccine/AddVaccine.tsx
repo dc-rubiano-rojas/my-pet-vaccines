@@ -53,42 +53,45 @@ function AddVaccine() {
 
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.addVaccineContainer}>
 
-            <Modal visible={showPicker} animationType='fade'>
-                <Calendar
-                    onDayPress={date => onChangeCalendar(date)}
-                    style={{
-                        borderWidth: 40,
-                        borderColor: COLORS.secondary,
-                        borderRadius: 10,
-                        elevation: 4,
-                        margin: 50,
-                    }}
-                    hideExtraDays={true}
-                />
-            </Modal>
+            <View style={styles.container}>
 
-            <>
-                <TouchableOpacity
-                    style={styles.loginText}
-                    onPress={() => handleUploadImage()}
-                >
-                    <Entypo name='upload-to-cloud' color={COLORS.primary} size={40} />
+                <Modal visible={showPicker} animationType='fade'>
+                    <Calendar
+                        onDayPress={date => onChangeCalendar(date)}
+                        style={{
+                            borderWidth: 40,
+                            borderColor: COLORS.secondary,
+                            borderRadius: 10,
+                            elevation: 4,
+                            margin: 50,
+                        }}
+                        hideExtraDays={true}
+                    />
+                </Modal>
 
+                <>
+                    <TouchableOpacity
+                        style={styles.loginText}
+                        onPress={() => handleUploadImage()}
+                    >
+                        <Entypo name='upload-to-cloud' color={COLORS.primary} size={40} />
+
+                    </TouchableOpacity>
+                    <TextInput style={styles.input} placeholder='Name' autoCapitalize='none' onChangeText={(text) => setName(text)} />
+                </>
+
+                <TouchableOpacity style={styles.input} onPress={() => setShowPicker(!showPicker)}>
+                    <Text>Date</Text>
                 </TouchableOpacity>
-                <TextInput style={styles.input} placeholder='Name' autoCapitalize='none' onChangeText={(text) => setName(text)} />
-            </>
 
+                <TouchableOpacity style={styles.input} onPress={handleSubmit}>
+                    <Text>Submit</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.input} onPress={() => setShowPicker(!showPicker)}>
-                <Text>Date</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.input} onPress={handleSubmit}>
-                <Text>Submit</Text>
-            </TouchableOpacity>
-
-        </View>
+            </View>
+        </SafeAreaView>
     )
 }
 
