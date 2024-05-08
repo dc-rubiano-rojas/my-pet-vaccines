@@ -68,7 +68,8 @@ export type VaccineToRegister = {
 };
 
 export type Vaccine = {
-  id: string;
+  vid: string;
+  pid: string;
   name: string;
   img: string;
   startAt: string;
